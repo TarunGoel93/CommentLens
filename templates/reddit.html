@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit Sentiment Analysis Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 77, 77, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.2); }
+            100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.1); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #e0e0e0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(100, 100, 255, 0.15), transparent 70%);
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(44, 44, 44, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            animation: fadeIn 1s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(100, 100, 255, 0.7), transparent);
+            border-radius: 3px;
+        }
+
+        h2 {
+            color: #ffffff;
+            text-align: center;
+            margin: 25px 0 15px;
+            font-size: 1.8rem;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        h3 {
+            text-align: center;
+            color: #ffffff;
+            margin: 25px 0 15px;
+            font-size: 1.5rem;
+            animation: fadeIn 1.4s ease-out;
+        }
+
+        .spam-warning {
+            background-color: rgba(255, 77, 77, 0.8);
+            color: white;
+            font-weight: bold;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(255, 77, 77, 0.3);
+        }
+
+        .spam-warning.green {
+            background-color: rgba(76, 175, 80, 0.8);
+        }
+
+        .spam-warning i {
+            font-size: 1.2rem;
+        }
+
+        #spam-count {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-left: 5px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 2px 10px;
+            border-radius: 5px;
+        }
+
+        .summary-card {
+            background-color: rgba(51, 51, 51, 0.7);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            max-height: 200px;
+            overflow-y: auto;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .summary-title {
+            color: #4fc3f7;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .comment-item {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        .positive-comment {
+            border-left: 4px solid #198754;
+        }
+
+        .negative-comment {
+            border-left: 4px solid #dc3545;
+        }
+
+        .chart-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        img {
+            max-width: 500px;
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            animation: glow 3s infinite;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(100, 100, 255, 0.4);
+        }
+
+        .sentiment-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .sentiment-item {
+            background-color: rgba(51, 51, 51, 0.7);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            animation: slideIn 0.5s ease-out forwards;
+            opacity: 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sentiment-item:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .sentiment-item:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .sentiment-item:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .sentiment-item:hover {
+            transform: scale(1.03) translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background-color: rgba(61, 61, 61, 0.8);
+        }
+
+        .emoji {
+            font-size: 2rem;
+            margin-right: 15px;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .sentiment-item:hover .emoji {
+            transform: scale(1.2);
+        }
+
+        .positive {
+            border-left: 5px solid rgba(46, 213, 115, 0.8);
+        }
+
+        .negative {
+            border-left: 5px solid rgba(255, 71, 87, 0.8);
+        }
+
+        .neutral {
+            border-left: 5px solid rgba(255, 213, 79, 0.8);
+        }
+
+        .error-message {
+            background-color: rgba(255, 77, 77, 0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 25px;
+            background-color: rgba(100, 100, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(100, 100, 255, 0.3);
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+            z-index: -1;
+        }
+
+        .back-button:hover {
+            background-color: rgba(100, 100, 255, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(100, 100, 255, 0.3);
+        }
+
+        .back-button:hover::before {
+            left: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+            }
+
+            .sentiment-item {
+                padding: 12px;
+            }
+
+            .emoji {
+                font-size: 1.5rem;
+            }
+
+            .summary-card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reddit Sentiment Analysis Results</h1>
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% else %}
+            <!-- Summary Section -->
+            <div class="summary-card">
+                <h3 class="summary-title"><i class="fas fa-comments me-2"></i>Key Comments</h3>
+                <div id="comment-summary" style="white-space: pre-line; line-height: 1.6;"></div>
+            </div>
+
+            <!-- Spam Warning Section -->
+            {% if spam_count > 0 %}
+            <div class="spam-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                Potential Spam Comments Detected: <span id="spam-count">{{ spam_count }}</span>
+            </div>
+            {% else %}
+            <div class="spam-warning green">
+                <i class="fas fa-check-circle"></i>
+                No Spam Comments Detected
+            </div>
+            {% endif %}
+
+            <h2>Sentiment Distribution</h2>
+            <div class="chart-container">
+                <img src="data:image/png;base64,{{ plot_url }}" alt="Sentiment Pie Chart">
+            </div>
+            <h3>Sentiment Counts:</h3>
+            <ul class="sentiment-list">
+                <li class="sentiment-item positive">
+                    <span class="emoji">😊</span>
+                    <span>Positive: {{ sentiments.positive }}</span>
+                </li>
+                <li class="sentiment-item negative">
+                    <span class="emoji">😔</span>
+                    <span>Negative: {{ sentiments.negative }}</span>
+                </li>
+                <li class="sentiment-item neutral">
+                    <span class="emoji">😐</span>
+                    <span>Neutral: {{ sentiments.neutral }}</span>
+                </li>
+            </ul>
+        {% endif %}
+        <a href="/dashboard" class="back-button"><i class="fas fa-arrow-left me-2"></i>Back to Dashboard</a>
+    </div>
+
+    <script>
+        function formatCommentSummary(summaryText) {
+            const lines = summaryText.split('\n');
+            let html = '';
+            
+            lines.forEach(line => {
+                if (line.startsWith('Top Positive Comments:')) {
+                    html += `<h5 class="text-success mt-3">${line}</h5>`;
+                } else if (line.startsWith('Top Negative Comments:')) {
+                    html += `<h5 class="text-danger mt-3">${line}</h5>`;
+                } else if (line.startsWith('Summary:')) {
+                    html += `<h5 class="text-info mt-3">${line}</h5>`;
+                } else if (line.trim() === '') {
+                    html += '<br>';
+                } else {
+                    const commentClass = line.includes('Positive') ? 'positive-comment' : 
+                                       line.includes('Negative') ? 'negative-comment' : '';
+                    html += `<div class="comment-item ${commentClass}">${line}</div>`;
+                }
+            });
+            
+            return html;
+        }
+
+        window.addEventListener('load', () => {
+            const summaryText = `{{ summary | safe }}`;
+            document.getElementById('comment-summary').innerHTML = formatCommentSummary(summaryText);
+
+            const spamCount = {{ spam_count }};
+            if (spamCount > 5) {
+                const spamWarning = document.querySelector('.spam-warning');
+                spamWarning.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    spamWarning.style.animation = '';
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>

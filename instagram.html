@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Analysis</title>
+</head>
+<body>
+    <h2>Analyze Instagram Comments</h2>
+    <form action="{{ url_for('analyze_instagram') }}" method="post">
+        <input type="text" name="post_id" placeholder="Enter Instagram Post ID" required><br>
+        <button type="submit">Analyze</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,282 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sentiment Analysis Dashboard</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+        <style>
+            @keyframes gradientBG {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+            body {
+                background: linear-gradient(-45deg, #1e1e1e, #2c2c2c, #3a3a3a, #2c2c2c);
+                background-size: 400% 400%;
+                animation: gradientBG 15s ease infinite;
+                color: #f5f5f5;
+                font-family: 'Arial', sans-serif;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+            }
+            .container {
+                background-color: rgba(44, 44, 44, 0.8);
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(10px);
+                transition: all 0.3s ease;
+                animation: fadeIn 1s ease-out;
+                padding: 2rem;
+            }
+            .container:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            }
+            h1, h3 {
+                text-align: center;
+                color: #ffffff;
+            }
+            .sentiment-item {
+                background-color: rgba(51, 51, 51, 0.7);
+                border-radius: 10px;
+                transition: all 0.3s ease;
+                animation: fadeIn 0.5s ease-out;
+                padding: 1.5rem;
+                height: 100%;
+            }
+            .sentiment-item:hover {
+                transform: scale(1.03);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            }
+            .spam-alert {
+                background-color: rgba(255, 77, 77, 0.8);
+                color: white;
+                font-weight: bold;
+                border-radius: 10px;
+                padding: 1rem;
+                margin-bottom: 1.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+            }
+            .spam-count {
+                font-size: 1.5rem;
+                font-weight: bold;
+                margin-left: 0.5rem;
+                color: #ffeb3b;
+            }
+            .btn-secondary {
+                transition: all 0.3s ease;
+                background-color: #6c757d;
+                border-color: #6c757d;
+                padding: 0.5rem 1.5rem;
+            }
+            .btn-secondary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                background-color: #5a6268;
+                border-color: #545b62;
+            }
+            .progress {
+                height: 25px;
+                background-color: rgba(255, 255, 255, 0.2);
+                margin-bottom: 2rem;
+            }
+            .progress-bar {
+                transition: width 1s ease-out;
+            }
+            .summary-card {
+                background-color: rgba(51, 51, 51, 0.7);
+                border-radius: 10px;
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+                max-height: 200px;
+                overflow-y: auto;
+            }
+            .summary-title {
+                color: #4fc3f7;
+                margin-bottom: 1rem;
+            }
+            .comment-item {
+                margin-bottom: 0.5rem;
+                padding: 0.5rem;
+                background-color: rgba(255, 255, 255, 0.1);
+                border-radius: 5px;
+            }
+            .positive-comment {
+                border-left: 4px solid #198754;
+            }
+            .negative-comment {
+                border-left: 4px solid #dc3545;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container my-5">
+            <h1 class="mb-4"><i class="fas fa-chart-pie me-2"></i>YouTube Comments Analysis</h1>
+            
+            <!-- Summary Section -->
+            <div class="summary-card">
+                <h3 class="summary-title"><i class="fas fa-comments me-2"></i>Key Comments</h3>
+                <div id="comment-summary" style="white-space: pre-line; line-height: 1.6;"></div>
+            </div>
+
+            <!-- Spam Alert Section -->
+            {% if spam_count > 0 %}
+            <div class="spam-alert">
+                <i class="fas fa-exclamation-triangle fa-lg me-2"></i>
+                <span>Potential Spam Comments Detected:</span>
+                <span class="spam-count">{{ spam_count }}</span>
+            </div>
+            {% else %}
+            <div class="spam-alert" style="background-color: rgba(76, 175, 80, 0.8);">
+                <i class="fas fa-check-circle fa-lg me-2"></i>
+                <span>No Spam Comments Detected</span>
+            </div>
+            {% endif %}
+
+            <!-- Sentiment Cards -->
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <div class="sentiment-item text-center">
+                        <i class="fas fa-smile fa-3x mb-2 text-success"></i>
+                        <h3>Positive</h3>
+                        <p class="count display-4" id="positive">0</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="sentiment-item text-center">
+                        <i class="fas fa-meh fa-3x mb-2 text-warning"></i>
+                        <h3>Neutral</h3>
+                        <p class="count display-4" id="neutral">0</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="sentiment-item text-center">
+                        <i class="fas fa-frown fa-3x mb-2 text-danger"></i>
+                        <h3>Negative</h3>
+                        <p class="count display-4" id="negative">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sentiment Progress Bar -->
+            <h3 class="mb-3"><i class="fas fa-chart-line me-2"></i>Overall Sentiment Distribution</h3>
+            <div class="progress mb-4">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar bg-danger" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
+            <!-- Sentiment Graph -->
+            <h3 class="mb-3"><i class="fas fa-chart-pie me-2"></i>Sentiment Analysis Results</h3>
+            <img src="data:image/png;base64,{{ plot_url }}" alt="Sentiment Analysis Graph" class="img-fluid mb-4 rounded d-block mx-auto" style="max-height: 500px;">
+            
+            <!-- Back Button -->
+            <div class="text-center">
+                <a href="/dashboard" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            function animateCount(element, target) {
+                let count = 0;
+                const duration = 2000;
+                const interval = 20;
+                const step = target / (duration / interval);
+
+                const timer = setInterval(() => {
+                    count += step;
+                    if (count >= target) {
+                        clearInterval(timer);
+                        count = target;
+                    }
+                    element.textContent = Math.round(count);
+                }, interval);
+            }
+
+            function animateProgressBar(positiveCount, neutralCount, negativeCount) {
+                const total = positiveCount + neutralCount + negativeCount;
+                if (total === 0) return;
+                
+                const positivePercentage = (positiveCount / total) * 100;
+                const neutralPercentage = (neutralCount / total) * 100;
+                const negativePercentage = (negativeCount / total) * 100;
+
+                document.querySelector('.progress-bar.bg-success').style.width = `${positivePercentage}%`;
+                document.querySelector('.progress-bar.bg-warning').style.width = `${neutralPercentage}%`;
+                document.querySelector('.progress-bar.bg-danger').style.width = `${negativePercentage}%`;
+            }
+
+            function formatCommentSummary(summaryText) {
+                const lines = summaryText.split('\n');
+                let html = '';
+                
+                lines.forEach(line => {
+                    if (line.startsWith('Top Positive Comments:')) {
+                        html += `<h5 class="text-success mt-3">${line}</h5>`;
+                    } else if (line.startsWith('Top Negative Comments:')) {
+                        html += `<h5 class="text-danger mt-3">${line}</h5>`;
+                    } else if (line.startsWith('Summary:')) {
+                        html += `<h5 class="text-info mt-3">${line}</h5>`;
+                    } else if (line.trim() === '') {
+                        html += '<br>';
+                    } else {
+                        const commentClass = line.includes('Positive') ? 'positive-comment' : 
+                                        line.includes('Negative') ? 'negative-comment' : '';
+                        html += `<div class="comment-item ${commentClass}">${line}</div>`;
+                    }
+                });
+                
+                return html;
+            }
+
+            window.addEventListener('load', () => {
+                const positiveCount = {{ sentiments['positive'] }};
+                const neutralCount = {{ sentiments['neutral'] }};
+                const negativeCount = {{ sentiments['negative'] }};
+                const spamCount = {{ spam_count }};
+
+                animateCount(document.getElementById('positive'), positiveCount);
+                animateCount(document.getElementById('neutral'), neutralCount);
+                animateCount(document.getElementById('negative'), negativeCount);
+                
+                setTimeout(() => animateProgressBar(positiveCount, neutralCount, negativeCount), 500);
+
+                // Format and display the comment summary
+                const summaryText = `{{ summary }}`;
+                document.getElementById('comment-summary').innerHTML = formatCommentSummary(summaryText);
+
+                // Add shake animation to spam alert if spam count is high
+                if (spamCount > 5) {
+                    const spamAlert = document.querySelector('.spam-alert');
+                    spamAlert.style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        spamAlert.style.animation = '';
+                    }, 500);
+                }
+            });
+        </script>
+    </body>
+    </html>

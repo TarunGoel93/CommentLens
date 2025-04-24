@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommentLens - AI-Powered Comment Analysis</title>
+    <!-- Linking CSS from Flask's static folder -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+    <!-- Linking external font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome kit (ensure this link is correct for your kit) -->
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="container">
+                <a href="#" class="logo">CommentLens</a>
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#try-it">Try It</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="/login" class="btn btn-secondary">Log In</a></li>
+                    <li><a href="/register" class="btn btn-primary">Sign Up</a></li>
+                    
+                </ul>
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+    
+
+    </main>
+
+    <footer>
+        <!-- Footer content remains unchanged -->
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+        <section id="hero">
+          <div class="container">
+              <div class="hero-content">
+                  <h1>AI-Powered Insights for Your Comments</h1>
+                  <p>Analyze audience feedback across YouTube, Instagram, and Twitter with cutting-edge AI technology.</p>
+                  <a href="/register" class="btn btn-primary btn-large">Get Started</a>
+              </div>
+          
+          </div>
+      </section>
+      
+      
+
+        <section id="about">
+            <div class="container">
+                <h2>About CommentLens</h2>
+                <p>CommentLens harnesses the power of advanced AI to analyze comments from multiple platforms, providing content creators and brands with invaluable insights into audience sentiment, spam detection, and data-driven content strategy recommendations.</p>
+            </div>
+        </section>
+
+        <section id="features">
+            <div class="container">
+                <h2>Key Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-globe"></i>
+                        <h3>Multi-Platform Analysis</h3>
+                        <p>Analyze comments across YouTube, Instagram, and Twitter in one centralized dashboard.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-heart"></i>
+                        <h3>Sentiment Detection</h3>
+                        <p>Identify positive, negative, and neutral sentiments in comments with high accuracy.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Spam & Bot Detection</h3>
+                        <p>Automatically filter out spam and bot comments to focus on genuine audience feedback.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Trending Topics</h3>
+                        <p>Discover popular keywords and topics in your comments to guide content creation.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Engagement Metrics</h3>
+                        <p>Track user engagement and interaction rates to measure content performance.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>AI-Powered Suggestions</h3>
+                        <p>Receive content strategy recommendations based on comprehensive audience feedback analysis.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works">
+            <div class="container">
+                <h2>How It Works</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Connect Platforms</h3>
+                        <p>Easily integrate your YouTube, Instagram, and Twitter accounts with CommentLens.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>AI Analysis</h3>
+                        <p>Our advanced AI, powered by state-of-the-art machine learning, analyzes your comments in real-time.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Generate Insights</h3>
+                        <p>Receive actionable insights and recommendations based on comprehensive analysis.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="try-it">
+            <div class="container">
+                <h2>Try It Now</h2>
+                <div class="try-it-container">
+                    <textarea id="sample-comment" placeholder="Enter a sample comment here..."></textarea>
+                    <button id="analyze-button" class="btn btn-primary">Analyze Sentiment</button>
+                    <div id="sentiment-result"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing">
+            <div class="container">
+                <h2>Pricing Plans</h2>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <h3>Starter</h3>
+                        <p class="price">$29<span>/month</span></p>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Basic comment analysis</li>
+                            <li><i class="fas fa-check"></i> Single platform support</li>
+                            <li><i class="fas fa-check"></i> 5,000 comments/month</li>
+                            <li><i class="fas fa-check"></i> Email support</li>
+                        </ul>
+                        <a href="#" class="btn btn-secondary">Choose Plan</a>
+                    </div>
+                    <div class="pricing-card featured">
+                        <h3>Pro</h3>
+                        <p class="price">$79<span>/month</span></p>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Advanced sentiment analysis</li>
+                            <li><i class="fas fa-check"></i> Multi-platform support</li>
+                            <li><i class="fas fa-check"></i> 50,000 comments/month</li>
+                            <li><i class="fas fa-check"></i> AI-powered suggestions</li>
+                            <li><i class="fas fa-check"></i> Priority support</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary">Choose Plan</a>
+                    </div>
+                    <div class="pricing-card">
+                        <h3>Enterprise</h3>
+                        <p class="price">Custom</p>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Enterprise-grade analysis</li>
+                            <li><i class="fas fa-check"></i> Unlimited platforms</li>
+                            <li><i class="fas fa-check"></i> Unlimited comments</li>
+                            <li><i class="fas fa-check"></i> Custom integrations</li>
+                            <li><i class="fas fa-check"></i> Dedicated account manager</li>
+                        </ul>
+                        <a href="#" class="btn btn-secondary">Contact Sales</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cta">
+            <div class="container">
+                <h2>Ready to Unlock the Power of AI?</h2>
+                <p>Start analyzing your comments and gain valuable insights today.</p>
+                <a href="#" class="btn btn-primary btn-large">Try CommentLens Now</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CommentLens</h3>
+                    <p>AI-powered comment analysis for content creators and brands.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect With Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">API Documentation</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 CommentLens. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html> 
+
+
+
+
