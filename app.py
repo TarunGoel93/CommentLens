@@ -15,6 +15,9 @@ from sumy.summarizers.lex_rank import LexRankSummarizer
 import asyncpraw
 import asyncio
 import nest_asyncio
+import re
+from collections import Counter
+import string
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
@@ -29,7 +32,7 @@ class User(db.Model):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
 
-    def _init_(self, email, password, name):
+    def __init__(self, email, password, name):
         self.name = name
         self.email = email
         self.password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -54,6 +57,28 @@ def credentials_to_dict(credentials):
         'client_secret': credentials.client_secret,
         'scopes': credentials.scopes
     }
+
+def extract_video_id(url):
+    """
+    Extract the YouTube video ID from a given URL.
+    Supports formats like:
+    - https://www.youtube.com/watch?v=VIDEO_ID
+    - https://youtu.be/VIDEO_ID
+    - https://studio.youtube.com/video/VIDEO_ID/edit
+    - https://www.youtube.com/embed/VIDEO_ID
+    Returns the video ID or None if not found.
+    """
+    patterns = [
+        r'(?:v=|youtu\.be\/|\/embed\/|\/video\/)([a-zA-Z0-9_-]{11})',
+        r'youtube\.com\/.*[?&]v=([a-zA-Z0-9_-]{11})'
+    ]
+    
+    for pattern in patterns:
+        match = re.search(pattern, url)
+        if match:
+            return match.group(1)
+    
+    return None
 
 @app.route('/')
 def index():
@@ -121,6 +146,7 @@ def oauth2callback():
 
 def get_comments(youtube, video_id):
     comments = []
+    question_comments = []
     user_comments = {}
     spam_count = 0
 
@@ -131,11 +157,16 @@ def get_comments(youtube, video_id):
     )
     response = request.execute()
 
+    question_words = r'^(what|how|why|when|where|who|which|is|are|can|do|does|did)\b'
+    
     for item in response.get('items', []):
         comment_text = item['snippet']['topLevelComment']['snippet']['textDisplay']
         author_id = item['snippet']['topLevelComment']['snippet']['authorChannelId']['value']
         
         comments.append(comment_text)
+        
+        if re.search(r'\?$', comment_text, re.IGNORECASE) or re.search(question_words, comment_text.lower()):
+            question_comments.append(comment_text)
         
         if author_id in user_comments:
             if comment_text in user_comments[author_id]:
@@ -145,15 +176,22 @@ def get_comments(youtube, video_id):
         else:
             user_comments[author_id] = {comment_text}
 
-    return comments, spam_count
+    return comments, question_comments, spam_count
 
-def summarize_comments(comments, sentiments):
-    positive_comments = [c for c, s in zip(comments, sentiments) if s == 'positive']
-    negative_comments = [c for c, s in zip(comments, sentiments) if s == 'negative']
+def summarize_comments(comments, question_comments, sentiments):
+    positive_comments = [c for c, s in zip(comments, sentiments) if s == 'positive' and c not in question_comments]
+    negative_comments = [c for c, s in zip(comments, sentiments) if s == 'negative' and c not in question_comments]
     
     summary_lines = []
     
+    if question_comments:
+        summary_lines.append("Top Question Comments:")
+        for i, comment in enumerate(question_comments[:2], 1):
+            summary_lines.append(f"{i}. {comment[:100]}{'...' if len(comment) > 100 else ''}")
+    
     if positive_comments:
+        if summary_lines:
+            summary_lines.append("")
         summary_lines.append("Top Positive Comments:")
         for i, comment in enumerate(positive_comments[:2], 1):
             summary_lines.append(f"{i}. {comment[:100]}{'...' if len(comment) > 100 else ''}")
@@ -176,7 +214,41 @@ def summarize_comments(comments, sentiments):
         for sentence in summary:
             summary_lines.append(str(sentence))
     
-    return "\n".join(summary_lines[:8])
+    return "\n".join(summary_lines[:10])
+
+def get_frequent_words(comments, n=10):
+    """
+    Extract the top N most frequent meaningful words from comments.
+    Remove stopwords, punctuation, convert to lowercase, keep only alphabetic words.
+    """
+    # Define stopwords
+    stopwords = set([
+        'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from', 'has', 'he',
+        'in', 'is', 'it', 'its', 'of', 'on', 'that', 'the', 'to', 'was', 'were', 'will',
+        'with', 'this', 'but', 'not', 'or', 'have', 'had', 'i', 'you', 'they', 'we',
+        'their', 'there', 'here', 'what', 'how', 'why', 'when', 'where', 'who'
+    ])
+    
+    # Initialize word counter
+    word_counter = Counter()
+    
+    # Process each comment
+    for comment in comments:
+        # Convert to lowercase
+        comment = comment.lower()
+        # Remove punctuation
+        comment = comment.translate(str.maketrans('', '', string.punctuation))
+        # Split into words
+        words = comment.split()
+        # Filter alphabetic words and remove stopwords
+        meaningful_words = [word for word in words if word.isalpha() and word not in stopwords]
+        # Update counter
+        word_counter.update(meaningful_words)
+    
+    # Get the top N words
+    top_words = word_counter.most_common(n)
+    
+    return top_words
 
 @app.route('/analyze_comments', methods=['GET', 'POST'])
 def analyze_comments():
@@ -187,8 +259,13 @@ def analyze_comments():
     youtube = build(API_SERVICE_NAME, API_VERSION, credentials=credentials)
 
     if request.method == 'POST':
-        video_id = request.form['video_id']
-        comments, spam_count = get_comments(youtube, video_id)
+        video_url = request.form['video_id']
+        video_id = extract_video_id(video_url)
+        
+        if not video_id:
+            return render_template('youtube.html', error="Invalid YouTube URL. Please provide a valid video URL.")
+        
+        comments, question_comments, spam_count = get_comments(youtube, video_id)
         
         with open('classifier.pkl', 'rb') as model_file:
             classifier = pickle.load(model_file)
@@ -204,7 +281,10 @@ def analyze_comments():
             'neutral': list(predicted_sentiments).count('neutral')
         }
 
-        summary = summarize_comments(comments, predicted_sentiments)
+        summary = summarize_comments(comments, question_comments, predicted_sentiments)
+        
+        # Get the top 10 most frequent words
+        frequent_words = get_frequent_words(comments, n=10)
 
         plt.figure(figsize=(10, 6))
         plt.pie(sentiment_counts.values(), labels=sentiment_counts.keys(), 
@@ -221,7 +301,8 @@ def analyze_comments():
                             plot_url=plot_url, 
                             sentiments=sentiment_counts, 
                             summary=summary, 
-                            spam_count=spam_count)
+                            spam_count=spam_count,
+                            frequent_words=frequent_words)
 
     return render_template('youtube.html')
 
@@ -255,7 +336,6 @@ async def fetch_comments(post_id):
         await reddit.close()
     return comments, spam_count
 
-
 @app.route('/reddit_input')
 def reddit_input():
     return render_template('reddit_input.html')
@@ -288,7 +368,7 @@ def reddit_analysis():
             'neutral': list(predicted_sentiments).count('neutral')
         }
 
-        summary = summarize_comments(comments, predicted_sentiments)
+        summary = summarize_comments(comments, [], predicted_sentiments)
 
         plt.figure(figsize=(10, 6))
         plt.pie(sentiment_counts.values(), labels=sentiment_counts.keys(), 
@@ -311,10 +391,5 @@ def reddit_analysis():
         print(f"Error processing Reddit analysis: {e}")
         return render_template('reddit_input.html', error="Error processing Reddit post")
 
-# ... (keep all other existing routes and functions)
-
-if __name__ == '_main_':
-    app.run('localhost', 5000, debug=True)
-
-if __name__ == '_main_':
+if __name__ == '__main__':
     app.run('localhost', 5000, debug=True)
