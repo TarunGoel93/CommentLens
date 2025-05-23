@@ -83,7 +83,7 @@ CommentLens uses awesome tools to work its magic! 🌟
   <a href="https://www.sqlite.org"><img src="https://www.vectorlogo.zone/logos/sqlite/sqlite-icon.svg" alt="SQLite" width="40" height="40"/></a>
   <a href="https://developers.google.com/youtube"><img src="https://www.vectorlogo.zone/logos/youtube/youtube-icon.svg" alt="YouTube API" width="40" height="40"/></a>
   <a href="https://www.reddit.com/dev/api"><img src="https://www.vectorlogo.zone/logos/reddit/reddit-icon.svg" alt="Reddit API" width="40" height="40"/></a>
-  <a href="https://matplotlib.org"><img src="https://tse4.mm.bing.net/th?id=OIP.E5J8npHStXRaoCta8S8UHgHaBf&pid=Api&P=0&h=180" alt="Matplotlib" width="40" height="40"/></a>
+  <a href="https://matplotlib.org"><img src="https://tse4.mm.bing.net/th?id=OIP.E5J8npHStXRaoCta8S8UHgHaBf&pid=Api&P=0&h=180" alt="Matplotlib" width="70" height="40"/></a>
   <a href="https://scikit-learn.org"><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.png" alt="scikit-learn" width="40" height="40"/></a>
 </p>
 
