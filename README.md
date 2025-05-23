@@ -20,7 +20,7 @@
 - 📫 Reach us at **goeltarun15@gmail.com**.
 - 📄 Check our project at [https://github.com/TarunGoel93/CommentLens](https://github.com/TarunGoel93/CommentLens).
 
-> **CommentLens** is like a magic wand for your comment section! 🪄 It checks up to 500 comments (100 for free), finds what fans love, spots questions, and catches rude stuff—all with fun charts and easy tips. Perfect for YouTubers and Redditors! 💖
+> **CommentLens** is like a magic wand for your comment section! 🪄 It checks up to 2K comments (100 for free), finds what fans love, spots questions, and catches rude stuff—all with fun charts and easy tips. Perfect for YouTubers and Redditors! 💖
 
 ---
 
@@ -41,7 +41,7 @@ This crisis affects creators worldwide, from new YouTubers to Reddit pros, riski
 
 > **CommentLens is a game-changer for creators everywhere!** 🌟 Our web app tackles the comment crisis head-on, empowering YouTubers and Redditors to manage comments effortlessly and build thriving communities. Here’s how we solve it:
 
-- **Smart Analysis**: Processes up to 500 comments (100 for free) in seconds, saving hours of manual work. ⚡
+- **Smart Analysis**: Processes up to 2K comments (100 for free) in seconds, saving hours of manual work. ⚡
 - **Mood Insights**: Detects if fans are happy 😄, upset 😞, or neutral 😐, helping creators understand their audience’s vibe. 
 - **Question Spotlight**: Finds questions like “What’s next?” so creators can engage directly with fans. ❓
 - **Toxicity Filter**: Spots rude or hateful comments, even in Hindi, to keep communities positive and safe. 🛑
@@ -68,7 +68,7 @@ By automating comment management, CommentLens saves time, fosters positivity, an
 | 🌐 **Multi-Platform** | Works for both YouTube videos and Reddit posts. |
 | ⚡ **Fast Processing** | Analyzes comments quickly, even for large volumes. |
 
-<img align="center" alt="CommentLens Dashboard" width="400" style="border-radius: 10px;" src="assets/dashboard.png">
+
 
 ---
 
@@ -79,7 +79,7 @@ CommentLens uses awesome tools to work its magic! 🌟
 <h3 align="left">Tech Stack:</h3>
 <p align="left">
   <a href="https://www.python.org"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="Python" width="40" height="40"/></a>
-  <a href="https://flask.palletsprojects.com"><img src="https://www.vectorlogo.zone/logos/pocoo_flask/pocoo_flask-icon.svg" alt="Flask" width="40" height="40"/></a>
+  <a href="https://flask.palletsprojects.com"><img src="https://tse3.mm.bing.net/th?id=OIP.edWqxgjKgCQbVTLPQ5MJtgHaGn&pid=Api&P=0&h=180" alt="Flask" width="40" height="40"/></a>
   <a href="https://www.sqlite.org"><img src="https://www.vectorlogo.zone/logos/sqlite/sqlite-icon.svg" alt="SQLite" width="40" height="40"/></a>
   <a href="https://developers.google.com/youtube"><img src="https://www.vectorlogo.zone/logos/youtube/youtube-icon.svg" alt="YouTube API" width="40" height="40"/></a>
   <a href="https://www.reddit.com/dev/api"><img src="https://www.vectorlogo.zone/logos/reddit/reddit-icon.svg" alt="Reddit API" width="40" height="40"/></a>
