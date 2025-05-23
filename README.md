@@ -169,18 +169,17 @@ How to Use
 - See cool charts and comment insights!
 
 
-📷 Sneak Peek
+---
 
   
   
 
-
-
-Tip: Add real screenshots to /assets for extra sparkle! ✨
 
 
 🎥 See It Live
 Check out our demo video to see CommentLens rock! (Add your video link here.) 🎬
+
+---
 
 🌟 What’s Coming Next?
 We’re making CommentLens even cooler! Soon:
@@ -191,6 +190,7 @@ Live comment alerts.
 Fancy charts like word clouds.
 Support for more languages.
 
+---
 
 🤗 Help Us Grow
 
@@ -204,6 +204,8 @@ Share: git push origin my-cool-idea.
 Tell us: Open a Pull Request.
 
 Check our Code of Conduct and report bugs here.
+
+---
 
 📜 Free to Use
 CommentLens is free for everyone under the MIT License. Play with it, share it, make it yours! 😄
@@ -221,14 +223,16 @@ Meet the Creators! 🚀
 
 
   
-  Shubh Singhal: ML Enthusiast & Data Explorer 🧐
+  Shubh Singhal: 🧐
   
   
 
 
 Connect with Us:
 
-  
+
+
+---
   
 
 
