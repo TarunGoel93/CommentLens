@@ -14,6 +14,12 @@ Missed Ideas! You might skip questions or tips for your next big hit. 💡
 
 Going through comments by hand is super tough. You need a fun way to know what your fans are saying! 😊
 
+
+__________________________________________________________________________________________________________________________________________________________________________________
+
+
+
+
 🌈 How CommentLens Saves the Day
 
 CommentLens is your comment superhero! 🦸‍♀️ It looks at up to 500 comments (100 for free) and shows you:
@@ -26,6 +32,10 @@ Hot Words: Shows words like “funny” or “tutorial” to plan your next post
 Smart Tips (Coming Soon): Groq AI will give you quick summaries and ideas!
 
 It saves time, makes fans happy, and helps your channel grow! 💖
+
+__________________________________________________________________________________________________________________________________________________________________________________
+
+
 
 🌟 Cool Things CommentLens Does
 
@@ -63,6 +73,10 @@ Groq AI will suggest video ideas!
 🔐 Safe Login
 Connects safely to get your comments.
 
+__________________________________________________________________________________________________________________________________________________________________________________
+
+
+
 
 
 
@@ -78,6 +92,10 @@ Smart Readers: Guess comment moods with brainy tricks.
 Charts: Draws pretty pictures of what fans feel.
 Web Design: Makes everything look cool!
 
+__________________________________________________________________________________________________________________________________________________________________________________
+
+
+
 
 💫 Why You’ll Love It
 
@@ -90,6 +108,10 @@ Bigger Channel: Use fan ideas to make hits. 📈
 Fun Vibes: Creates a friendly comment zone. 🎉
 
 Whether you’re a new YouTuber or Reddit pro, CommentLens helps you shine! ✨
+
+__________________________________________________________________________________________________________________________________________________________________________________
+
+
 
 🚀 Try It Out!
 Want to play with CommentLens? It’s easy to set up on your computer! 🖥️
@@ -148,25 +170,19 @@ Paste a YouTube video link or Reddit post ID.
 See cool charts and comment insights!
 
 
-📷 Sneak Peek
 
 
+__________________________________________________________________________________________________________________________________________________________________________________
 
-Dashboard
-Results
-
-
-
-
-
-
-
-
-Tip: Add real screenshots to /assets for extra sparkle! ✨
 
 
 🎥 See It Live
 Check out our demo video to see CommentLens rock! (Add your video link here.) 🎬
+
+
+__________________________________________________________________________________________________________________________________________________________________________________
+
+
 
 🌟 What’s Coming Next?
 We’re making CommentLens even cooler! Soon:
@@ -176,6 +192,10 @@ Find out if fans are excited or curious.
 Live comment alerts.
 Fancy charts like word clouds.
 Support for more languages.
+
+
+__________________________________________________________________________________________________________________________________________________________________________________
+
 
 
 🤗 Help Us Grow
@@ -191,20 +211,33 @@ Tell us: Open a Pull Request.
 
 Check our Code of Conduct and report bugs here.
 
+
+__________________________________________________________________________________________________________________________________________________________________________________
+
+
+
 📜 Free to Use
 CommentLens is free for everyone under the MIT License. Play with it, share it, make it yours! 😄
+
+
+__________________________________________________________________________________________________________________________________________________________________________________
+
 
 👨‍🚀 Our Team
 
 Tarun Goel: Code Wizard & Comment Tamer
-Add your friends here!
+Shubh Singhal
+
+
+__________________________________________________________________________________________________________________________________________________________________________________
+
 
 
 💬 Say Hi!
 Got ideas or questions? Reach out:
 
 GitHub: TarunGoel93
-Email: your.email@example.com
+Email: goeltarun15@gmail.com
 Issues: GitHub Issues
 
 
