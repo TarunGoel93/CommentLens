@@ -234,9 +234,8 @@ ________________________________________________________________________________
 
 Love CommentLens? Add your magic! 🎈
 
-
 1. Copy our code (fork on GitHub).
-<br>
+
 2. Add a feature: git checkout -b my-cool-idea.
 <br>
 3. Save it: git commit -m "Added cool idea".
