@@ -3,7 +3,7 @@
 
 CommentLens is a super cool web app that helps YouTubers and Redditors understand their comments! 😄 It checks your comments, finds what fans love, spots questions, and catches rude stuff—all with fun charts and easy tips. It’s like a magic wand for your comment section! 🪄
 
-
+__________________________________________________________________________________________________________________________________________________________________________________
 
 😩 Why Comments Are Hard
 If you make YouTube videos or Reddit posts, you get TONS of comments! Some say “This rocks!” 😍, others ask “What’s next?”, and a few might be mean 😣. But here’s the problem:
