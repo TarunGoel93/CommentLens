@@ -233,7 +233,8 @@ ________________________________________________________________________________
 🤗 Help Us Grow
 
 Love CommentLens? Add your magic! 🎈
-<br>
+
+
 1. Copy our code (fork on GitHub).
 <br>
 2. Add a feature: git checkout -b my-cool-idea.
