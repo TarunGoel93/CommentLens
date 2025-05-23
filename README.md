@@ -1,5 +1,3 @@
-![CommentLens Logo](https://via.placeholder.com/800x200.png?text=CommentLens+Logo)
-
 <h1 align="center">🎉 CommentLens 🌟</h1>
 <h3 align="center">A super cool web app to make YouTube & Reddit comments fun and easy! 😄</h3>
 
@@ -26,29 +24,32 @@
 
 ---
 
-## 😩 Why Comments Are Hard
+## 🌍 The Global Comment Crisis
 
-If you make YouTube videos or Reddit posts, you get TONS of comments! Some say “This rocks!” 😍, others ask “What’s next?”, and a few might be mean 😣. But here’s the problem:
+In today’s digital world, millions of creators on YouTube and Reddit face a **global challenge**: comment overload. 🌐 With billions of comments posted daily, creators struggle to keep up. This isn’t just a small problem—it’s a **real-world issue** affecting mental health, audience engagement, and content growth. Here’s why:
 
-- **Too Many!** Reading thousands takes forever. ⏳
-- **Rude Ones!** Mean comments make fans sad. 😞
-- **Missed Ideas!** You might skip questions or tips for your next big hit. 💡
+- **Overwhelming Volume**: Popular videos or posts get thousands of comments, making it impossible to read them all. ⏳
+- **Toxic Noise**: Hateful or rude comments, sometimes in multiple languages like Hindi, can discourage creators and harm communities. 😞
+- **Missed Opportunities**: Questions, feedback, and fan ideas get buried, stalling channel growth and connection. 💡
+- **Time Drain**: Manually sorting comments takes hours, pulling creators away from making awesome content. 😩
 
-Going through comments by hand is super tough. You need a fun way to know what your fans are saying! 😊
+This crisis affects creators worldwide, from new YouTubers to Reddit pros, risking burnout and disengaged audiences. Without a solution, the joy of content creation fades.
 
 ---
 
-## 🌈 How CommentLens Saves the Day
+## 🦸‍♀️ How CommentLens Solves It
 
-> **CommentLens is your comment superhero!** 🦸‍♀️ It looks at up to 500 comments (100 for free) and shows you:
+> **CommentLens is a game-changer for creators everywhere!** 🌟 Our web app tackles the comment crisis head-on, empowering YouTubers and Redditors to manage comments effortlessly and build thriving communities. Here’s how we solve it:
 
-- **Fan Moods**: Are they happy 😄, upset 😞, or chill 😐?
-- **Questions**: Finds “What’s this?” so you can answer.
-- **Rude Alerts**: Spots mean comments (even in Hindi!) to keep things nice.
-- **Hot Words**: Shows words like “funny” or “tutorial” to plan your next post.
-- **Smart Tips** (Coming Soon): Groq AI will give quick summaries and ideas!
+- **Smart Analysis**: Processes up to 500 comments (100 for free) in seconds, saving hours of manual work. ⚡
+- **Mood Insights**: Detects if fans are happy 😄, upset 😞, or neutral 😐, helping creators understand their audience’s vibe. 
+- **Question Spotlight**: Finds questions like “What’s next?” so creators can engage directly with fans. ❓
+- **Toxicity Filter**: Spots rude or hateful comments, even in Hindi, to keep communities positive and safe. 🛑
+- **Idea Generator**: Highlights popular words (e.g., “funny,” “tutorial”) to inspire new content. 💭
+- **Visual Magic**: Turns data into colorful charts and word clouds for easy understanding. 📊
+- **AI Boost (Soon)**: Groq AI will summarize comments and suggest video ideas, making content planning a breeze. 🧠
 
-It saves time, makes fans happy, and helps your channel grow! 💖
+By automating comment management, CommentLens saves time, fosters positivity, and unlocks growth. It’s a **global solution** helping creators from New York to New Delhi focus on what they love: creating! 🚀
 
 ---
 
@@ -56,15 +57,18 @@ It saves time, makes fans happy, and helps your channel grow! 💖
 
 | Feature | What It Does |
 |---------|--------------|
-| 🌍 **Fast Grab** | Gets YouTube or Reddit comments in a snap! |
-| 😎 **Mood Sort** | Labels comments as happy, sad, or neutral. |
-| 🛑 **Rude Stopper** | Catches mean comments to keep things friendly. |
-| 🔍 **Word Finder** | Spots popular words for new ideas. |
-| 📊 **Fun Charts** | Shows colorful charts of fan feelings. |
-| 🧠 **AI Tips (Soon)** | Groq AI will suggest video ideas! |
-| 🔐 **Safe Login** | Connects safely to get your comments. |
+| 🌍 **Comment Fetcher** | Grabs up to 500 YouTube or Reddit comments (100 free) in a snap! |
+| 😎 **Sentiment Analyzer** | Labels comments as happy, sad, or neutral to gauge fan vibes. |
+| ❓ **Question Detector** | Spots questions like “What’s this?” for quick replies. |
+| 🛑 **Toxicity Filter** | Catches rude or hateful comments, including in Hindi, to keep things friendly. |
+| 🔍 **Keyword Extractor** | Finds hot words like “funny” or “tutorial” to spark new ideas. |
+| 📊 **Chart Maker** | Creates colorful bar charts and word clouds to visualize trends. |
+| 🧠 **AI Summaries (Soon)** | Groq AI will summarize comments and suggest video topics. |
+| 🔐 **Secure Login** | Uses safe OAuth to connect to YouTube/Reddit accounts. |
+| 🌐 **Multi-Platform** | Works for both YouTube videos and Reddit posts. |
+| ⚡ **Fast Processing** | Analyzes comments quickly, even for large volumes. |
 
-<img align="center" alt="CommentLens Dashboard" width="400" style="border-radius: 10px;" src="https://via.placeholder.com/400x300.png?text=CommentLens+Dashboard">
+<img align="center" alt="CommentLens Dashboard" width="400" style="border-radius: 10px;" src="assets/dashboard.png">
 
 ---
 
@@ -231,6 +235,7 @@ Connect with Us:
 
 
 
+
   
 
 
@@ -244,6 +249,7 @@ Connect with Us:
 
 
 Made with 💕 for creators everywhere! Let’s make comments FUN! 🌈
+
 
 
 
