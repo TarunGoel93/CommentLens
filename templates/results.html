@@ -1,617 +1,762 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sentiment Analysis Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>YouTube Comments Analysis</title>
     <style>
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInRight {
-            from { opacity: 0; transform: translateX(30px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes fadeInLeft {
-            from { opacity: 0; transform: translateX(-30px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        @keyframes glow {
-            0% { box-shadow: 0 0 5px rgba(79, 195, 247, 0.5); }
-            50% { box-shadow: 0 0 20px rgba(79, 195, 247, 0.8); }
-            100% { box-shadow: 0 0 5px rgba(79, 195, 247, 0.5); }
-        }
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-30px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideInBottom {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes countUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes shine {
-            to { left: 100%; }
-        }
-        body {
-            background: linear-gradient(-45deg, #1e1e1e, #2c2c2c, #3a3a3a, #2c2c2c);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: #f5f5f5;
-            font-family: 'Arial', sans-serif;
-            min-height: 100vh;
-            padding: 2rem 0;
-        }
-        .container {
-            background-color: rgba(44, 44, 44, 0.8);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            animation: fadeIn 1s ease-out;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-        }
-        h1, h3 {
-            text-align: center;
-            color: #ffffff;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-        }
-        h1::after, h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #4fc3f7, transparent);
-            transition: width 0.5s ease, left 0.5s ease;
-        }
-        h1:hover::after, h3:hover::after {
-            width: 80%;
-            left: 10%;
-        }
-        .sentiment-item {
-            background-color: rgba(51, 51, 51, 0.7);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            padding: 1.5rem;
-            height: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-        .sentiment-item:nth-child(1) {
-            animation: fadeInLeft 0.6s ease-out forwards;
-        }
-        .sentiment-item:nth-child(2) {
-            animation: fadeIn 0.6s ease-out forwards;
-            animation-delay: 0.2s;
-        }
-        .sentiment-item:nth-child(3) {
-            animation: fadeInRight 0.6s ease-out forwards;
-            animation-delay: 0.4s;
-        }
-        .sentiment-item::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-        .sentiment-item:hover {
-            transform: scale(1.03);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        .sentiment-item:hover::before {
-            opacity: 1;
-        }
-        .sentiment-item i {
-            animation: float 3s ease-in-out infinite;
-        }
-        .sentiment-item .count {
-            animation: countUp 1s ease-out forwards;
-            opacity: 0;
-            animation-delay: 0.5s;
-        }
-        .spam-alert {
-            background-color: rgba(255, 77, 77, 0.8);
-            color: white;
-            font-weight: bold;
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            animation: fadeIn 0.8s ease-out forwards;
-            animation-delay: 0.3s;
-        }
-        .spam-alert::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            animation: shine 2s infinite;
-        }
-        .spam-count {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-left: 0.5rem;
-            color: #ffeb3b;
-            animation: pulse 2s infinite;
-        }
-        .btn-secondary {
-            transition: all 0.3s ease;
-            background-color: #6c757d;
-            border-color: #6c757d;
-            padding: 0.5rem 1.5rem;
-            position: relative;
-            overflow: hidden;
-            animation: fadeIn 0.8s ease-out forwards;
-            animation-delay: 1.2s;
-        }
-        .btn-secondary::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: all 0.5s ease;
-        }
-        .btn-secondary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            background-color: #5a6268;
-            border-color: #545b62;
-        }
-        .btn-secondary:hover::after {
-            left: 100%;
-        }
-        .progress {
-            height: 25px;
-            background-color: rgba(255, 255, 255, 0.2);
-            margin-bottom: 2rem;
-            border-radius: 15px;
-            overflow: hidden;
-            position: relative;
-            animation: fadeIn 0.8s ease-out forwards;
-            animation-delay: 0.6s;
-        }
-        .progress::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            animation: shine 3s infinite;
-        }
-        .progress-bar {
-            transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        .summary-card {
-            background-color: rgba(51, 51, 51, 0.7);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            max-height: 300px;
-            overflow-y: auto;
-            animation: fadeIn 0.8s ease-out;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-        }
-        .summary-card:hover {
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-            transform: translateY(-3px);
-        }
-        .summary-title {
-            color: #4fc3f7;
-            margin-bottom: 1rem;
-            animation: glow 3s infinite;
-            display: inline-block;
-        }
-        .comment-item {
-            margin-bottom: 0.5rem;
-            padding: 0.5rem;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            animation: slideInLeft 0.5s ease-out;
-            animation-fill-mode: both;
-        }
-        .comment-item:hover {
-            transform: translateX(5px);
-            background-color: rgba(255, 255, 255, 0.15);
-        }
-        .positive-comment {
-            border-left: 4px solid #198754;
-        }
-        .negative-comment {
-            border-left: 4px solid #dc3545;
-        }
-        .question-comment {
-            border-left: 4px solid #4fc3f7;
-        }
-        .word-frequency-card {
-            background-color: rgba(51, 51, 51, 0.7);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            animation: slideInBottom 1s ease-out;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-        }
-        .word-frequency-card:hover {
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-            transform: translateY(-3px);
-        }
-        .word-frequency-title {
-            color: #4fc3f7;
-            margin-bottom: 1rem;
-            animation: glow 3s infinite;
-            display: inline-block;
-        }
-        .word-item {
-            margin-bottom: 0.5rem;
-            padding: 0.5rem;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-            opacity: 0;
-            animation: slideInLeft 0.5s ease-out forwards;
-            animation-delay: calc(0.05s * var(--index, 0));
-        }
-        .word-item:hover {
-            transform: translateX(5px);
-            background-color: rgba(255, 255, 255, 0.15);
-        }
-        .word-item span:first-child {
-            flex-grow: 1;
-            padding-right: 0.5rem;
-        }
-        .word-item span:last-child {
-            width: 40px;
-            text-align: right;
-            background-color: rgba(79, 195, 247, 0.2);
-            border-radius: 4px;
-            padding: 2px 5px;
-            transition: all 0.3s ease;
-        }
-        .word-item:hover span:last-child {
-            background-color: rgba(79, 195, 247, 0.4);
-            transform: scale(1.1);
-        }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(79, 195, 247, 0.5);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(79, 195, 247, 0.7);
-        }
-        /* Image animation */
-        .img-fluid {
-            transition: all 0.5s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 1s ease-out forwards;
-            animation-delay: 0.8s;
-        }
-        .img-fluid:hover {
-            transform: scale(1.02);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-        }
-        .section-title {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 1.5rem;
-            animation: fadeIn 0.8s ease-out forwards;
-        }
-        .section-title i {
-            margin-right: 0.5rem;
-            animation: float 3s ease-in-out infinite;
-        }
-        .text-center {
-            text-align: center;
-        }
+       
+
+/* Base styles and variables */
+:root {
+    --primary: #4f46e5;
+    --primary-light: #e0e7ff;
+    --positive: #10b981;
+    --positive-light: #d1fae5;
+    --negative: #ef4444;
+    --negative-light: #fee2e2;
+    --neutral: #6b7280;
+    --neutral-light: #f3f4f6;
+    --question: #3b82f6;
+    --question-light: #dbeafe;
+    --abusive: #f97316;
+    --abusive-light: #ffedd5;
+    --border-radius: 12px;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s ease;
+}
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Base styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+    line-height: 1.5;
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Typography */
+h1, h2, h3 {
+    margin-top: 0;
+    color: #111827;
+}
+
+h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #f3f4f6;
+    padding-bottom: 0.5rem;
+}
+
+h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+p {
+    color: #4b5563;
+    margin-bottom: 1rem;
+}
+
+/* Section styling */
+.section {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: var(--transition);
+    animation: fadeIn 0.6s ease-out;
+}
+
+.section:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+/* Error section */
+.error {
+    background-color: var(--negative-light);
+    border-left: 4px solid var(--negative);
+    text-align: center;
+}
+
+/* Comment groups */
+.comment-group {
+    margin: 1.5rem 0;
+}
+
+.comment-heading {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #111827;
+    font-weight: 600;
+}
+
+/* Comment items */
+.comment-item {
+    margin: 0.75rem 0;
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    transition: var(--transition);
+    background-color: #f9fafb;
+}
+
+.comment-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+/* Comment type styling */
+.comment-group:has(.comment-heading:contains("Positive")) .comment-item {
+    background-color: var(--positive-light);
+    border-left: 3px solid var(--positive);
+}
+
+.comment-group:has(.comment-heading:contains("Negative")) .comment-item {
+    background-color: var(--negative-light);
+    border-left: 3px solid var(--negative);
+}
+
+.comment-group:has(.comment-heading:contains("Neutral")) .comment-item {
+    background-color: var(--neutral-light);
+    border-left: 3px solid var(--neutral);
+}
+
+.comment-group:has(.comment-heading:contains("Question")) .comment-item {
+    background-color: var(--question-light);
+    border-left: 3px solid var(--question);
+}
+
+.comment-group:has(.comment-heading:contains("Abusive")) .comment-item {
+    background-color: var(--abusive-light);
+    border-left: 3px solid var(--abusive);
+}
+
+.comment-text {
+    flex-grow: 1;
+    margin-right: 1rem;
+    line-height: 1.5;
+}
+
+/* Buttons */
+.comment-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: white;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    transition: var(--transition);
+    font-size: 0.875rem;
+}
+
+.delete-button {
+    background-color: var(--negative);
+}
+
+.delete-button:hover {
+    background-color: #dc2626;
+    transform: translateY(-2px);
+}
+
+.answer-button {
+    background-color: var(--question);
+}
+
+.answer-button:hover {
+    background-color: #2563eb;
+    transform: translateY(-2px);
+}
+
+.back-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: var(--transition);
+    margin-top: 1rem;
+}
+
+.back-button:hover {
+    background-color: #4338ca;
+    transform: translateY(-2px);
+}
+
+/* Alerts, sentiments, and percentages */
+.alerts, .sentiments, .sentiment-percentages {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.alert-box, .sentiment-box, .percentage-box {
+    flex: 1;
+    min-width: 150px;
+    padding: 1.25rem;
+    border-radius: 8px;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.alert-box:hover, .sentiment-box:hover, .percentage-box:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+/* Alert boxes */
+.alert-box {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.alert-box h3 {
+    margin-bottom: 0.5rem;
+}
+
+.alert-box p {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+    color: var(--primary);
+}
+
+/* Sentiment boxes */
+.sentiment-box {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+}
+
+.sentiment-box h3 {
+    margin-bottom: 0.5rem;
+}
+
+.sentiment-box p {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+    color: var(--primary);
+}
+
+/* Percentage boxes */
+.percentage-box {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+}
+
+.percentage-box h3 {
+    margin-bottom: 0.5rem;
+}
+
+.percentage-box p {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+    color: var(--primary);
+}
+
+/* Sentiment-specific styling */
+.sentiments .sentiment-box:nth-child(1), 
+.sentiment-percentages .percentage-box:nth-child(1) {
+    background-color: var(--positive-light);
+    border-color: var(--positive);
+}
+
+.sentiments .sentiment-box:nth-child(1) p, 
+.sentiment-percentages .percentage-box:nth-child(1) p {
+    color: var(--positive);
+}
+
+.sentiments .sentiment-box:nth-child(2), 
+.sentiment-percentages .percentage-box:nth-child(2) {
+    background-color: var(--negative-light);
+    border-color: var(--negative);
+}
+
+.sentiments .sentiment-box:nth-child(2) p, 
+.sentiment-percentages .percentage-box:nth-child(2) p {
+    color: var(--negative);
+}
+
+.sentiments .sentiment-box:nth-child(3), 
+.sentiment-percentages .percentage-box:nth-child(3) {
+    background-color: var(--neutral-light);
+    border-color: var(--neutral);
+}
+
+.sentiments .sentiment-box:nth-child(3) p, 
+.sentiment-percentages .percentage-box:nth-child(3) p {
+    color: var(--neutral);
+}
+
+.sentiments .sentiment-box:nth-child(4), 
+.sentiment-percentages .percentage-box:nth-child(4) {
+    background-color: var(--question-light);
+    border-color: var(--question);
+}
+
+.sentiments .sentiment-box:nth-child(4) p, 
+.sentiment-percentages .percentage-box:nth-child(4) p {
+    color: var(--question);
+}
+
+.sentiments .sentiment-box:nth-child(5), 
+.sentiment-percentages .percentage-box:nth-child(5) {
+    background-color: var(--abusive-light);
+    border-color: var(--abusive);
+}
+
+.sentiments .sentiment-box:nth-child(5) p, 
+.sentiment-percentages .percentage-box:nth-child(5) p {
+    color: var(--abusive);
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+th {
+    background-color: #f9fafb;
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+tr:hover {
+    background-color: #f9fafb;
+}
+
+td {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* Word count styling */
+td:nth-child(2) {
+    text-align: center;
+}
+
+td:nth-child(2) {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+/* Chart container */
+.chart-container {
+    width: 100%;
+    max-width: 600px;
+    height: 400px;
+    margin: 0 auto;
+}
+
+/* Debug section (hidden) */
+.debug-section {
+    display: none;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.section:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.section:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.section:nth-child(4) {
+    animation-delay: 0.3s;
+}
+
+.section:nth-child(5) {
+    animation-delay: 0.4s;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .alerts, .sentiments, .sentiment-percentages {
+        flex-direction: column;
+    }
+    
+    .alert-box, .sentiment-box, .percentage-box {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    h1 {
+        font-size: 1.75rem;
+    }
+    
+    .section {
+        padding: 1rem;
+    }
+}
     </style>
 </head>
 <body>
-    <div class="container my-5">
-        <h1 class="mb-4"><i class="fas fa-chart-pie me-2"></i>YouTube Comments Analysis</h1>
-        
-        <!-- Summary Section -->
-        <div class="summary-card">
-            <h3 class="summary-title"><i class="fas fa-comments me-2"></i>Key Comments</h3>
-            <div id="comment-summary" style="white-space: pre-line; line-height: 1.6;"></div>
-        </div>
+    <h1>YouTube Comments Analysis</h1>
 
-        <!-- Spam Alert Section -->
-        {% if spam_count > 0 %}
-        <div class="spam-alert">
-            <i class="fas fa-exclamation-triangle fa-lg me-2"></i>
-            <span>Potential Spam Comments Detected:</span>
-            <span class="spam-count">{{ spam_count }}</span>
-        </div>
-        {% else %}
-        <div class="spam-alert" style="background-color: rgba(76, 175, 80, 0.8);">
-            <i class="fas fa-check-circle fa-lg me-2"></i>
-            <span>No Spam Comments Detected</span>
+    {% if error %}
+    <div class="section error">
+        <p>Error: {{ error | escape }}</p>
+        <p>Please try a different video or check your API quota.</p>
+        <a href="{{ url_for('youtube') }}" class="back-button">Back to Analysis</a>
+    </div>
+    {% elif summary != "No comments available for this video." %}
+    <div class="section">
+        <p>Analyzed {{ question_count + abusive_count + sentiments.positive + sentiments.negative + sentiments.neutral }} comments (up to 500 comments processed).</p>
+    </div>
+    {% endif %}
+
+    <div class="section">
+        <h2>Key Comments</h2>
+        <p>Note: Up to 500 comments are analyzed for consistency and performance.</p>
+        {% if comment_data %}
+        {% set comment_types = ['abusive', 'question', 'positive', 'negative', 'neutral'] %}
+        {% for type in comment_types %}
+        {% set type_comments = comment_data | selectattr('type', 'equalto', type) | list %}
+        {% if type_comments %}
+        <div class="comment-group">
+            {% if type == 'abusive' %}
+                <h3 class="comment-heading">{{ 'Top Abusive Comments:' if type_comments[0].comment_id or type_comments[0].number else 'There are no abusive comments.' }}</h3>
+            {% elif type == 'question' %}
+                <h3 class="comment-heading">{{ 'Top Question Comments:' if type_comments[0].comment_id or type_comments[0].number else 'There are no question comments.' }}</h3>
+            {% elif type == 'positive' %}
+                <h3 class="comment-heading">{{ 'Top Positive Comments:' if type_comments[0].number else 'There are no positive comments.' }}</h3>
+            {% elif type == 'negative' %}
+                <h3 class="comment-heading">{{ 'Top Negative Comments:' if type_comments[0].number else 'There are no negative comments.' }}</h3>
+            {% elif type == 'neutral' %}
+                <h3 class="comment-heading">{{ 'Top Neutral Comments:' if type_comments[0].number else 'There are no neutral comments.' }}</h3>
+            {% endif %}
+            {% for comment in type_comments %}
+                {% if comment.number %}
+                <div class="comment-item">
+                    <span class="comment-text">{{ comment.number }}. {{ comment.text | escape }}</span>
+                    {% if comment.type == 'abusive' and comment.comment_id %}
+                        <a href="https://www.youtube.com/watch?v={{ video_id }}&lc={{ comment.comment_id }}" target="_blank" class="comment-button delete-button">Delete</a>
+                    {% elif comment.type == 'question' and comment.comment_id %}
+                        <a href="https://www.youtube.com/watch?v={{ video_id }}&lc={{ comment.comment_id }}" target="_blank" class="comment-button answer-button">Answer</a>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="comment-item">
+                    <span class="comment-text">{{ comment.text | escape }}</span>
+                </div>
+                {% endif %}
+            {% endfor %}
         </div>
         {% endif %}
+        {% endfor %}
+        {% else %}
+        <p>No comments available to summarize.</p>
+        {% endif %}
+    </div>
 
-        <!-- Sentiment Cards -->
-        <h3 class="section-title text-center"><i class="fas fa-heart-pulse me-2"></i>Sentiment Overview</h3>
-        <div class="row mb-4">
-            <div class="col-md-4 mb-3">
-                <div class="sentiment-item text-center">
-                    <i class="fas fa-smile fa-3x mb-2 text-success"></i>
-                    <h3>Positive</h3>
-                    <p class="count display-4" id="positive">0</p>
-                </div>
+    <div class="section">
+        <h2>Alerts</h2>
+        <div class="alerts">
+            <div class="alert-box">
+                <h3>Abusive Comments</h3>
+                <p>{{ abusive_count }}</p>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="sentiment-item text-center">
-                    <i class="fas fa-meh fa-3x mb-2 text-warning"></i>
-                    <h3>Neutral</h3>
-                    <p class="count display-4" id="neutral">0</p>
-                </div>
+            <div class="alert-box">
+                <h3>Spam Comments</h3>
+                <p>{{ spam_count }}</p>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="sentiment-item text-center">
-                    <i class="fas fa-frown fa-3x mb-2 text-danger"></i>
-                    <h3>Negative</h3>
-                    <p class="count display-4" id="negative">0</p>
-                </div>
+            <div class="alert-box">
+                <h3>Question Comments</h3>
+                <p>{{ question_count }}</p>
             </div>
-        </div>
-
-        <!-- Sentiment Progress Bar -->
-        <h3 class="section-title text-center"><i class="fas fa-chart-line me-2"></i>Overall Sentiment Distribution</h3>
-        <div class="progress mb-4">
-            <div class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-            <div class="progress-bar bg-warning" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-            <div class="progress-bar bg-danger" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-
-        <!-- Sentiment Graph -->
-        <h3 class="section-title text-center"><i class="fas fa-chart-pie me-2"></i>Sentiment Analysis Results</h3>
-        <img src="data:image/png;base64,{{ plot_url }}" alt="Sentiment Analysis Graph" class="img-fluid mb-4 rounded d-block mx-auto" style="max-height: 500px;">
-        
-        <!-- Word Frequency Section (Moved to bottom) -->
-        <div class="word-frequency-card">
-            <h3 class="word-frequency-title text-center"><i class="fas fa-wordpress me-2"></i>Most Frequent Words</h3>
-            <div id="word-frequency">
-                {% for word, count in frequent_words %}
-                <div class="word-item" style="--index: {{ loop.index }}">
-                    <span>{{ word }}</span>
-                    <span>{{ count }}</span>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <!-- Back Button -->
-        <div class="text-center">
-            <a href="/dashboard" class="btn btn-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
-            </a>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function animateCount(element, target) {
-            let count = 0;
-            const duration = 2000;
-            const interval = 20;
-            const step = target / (duration / interval);
+    <div class="section">
+        <h2>Sentiment Counts</h2>
+        <div class="sentiments">
+            <div class="sentiment-box">
+                <h3>Positive</h3>
+                <p>{{ sentiments.positive }}</p>
+            </div>
+            <div class="sentiment-box">
+                <h3>Negative</h3>
+                <p>{{ sentiments.negative }}</p>
+            </div>
+            <div class="sentiment-box">
+                <h3>Neutral</h3>
+                <p>{{ sentiments.neutral }}</p>
+            </div>
+            <div class="sentiment-box">
+                <h3>Question</h3>
+                <p>{{ sentiments.question }}</p>
+            </div>
+            <div class="sentiment-box">
+                <h3>Abusive</h3>
+                <p>{{ sentiments.abusive }}</p>
+            </div>
+        </div>
+    </div>
 
-            const timer = setInterval(() => {
-                count += step;
-                if (count >= target) {
-                    clearInterval(timer);
-                    count = target;
-                }
-                element.textContent = Math.round(count);
-            }, interval);
-        }
+    <div class="section">
+        <h2>Overall Sentiment</h2>
+        {% if plot_url %}
+        <img src="data:image/png;base64,{{ plot_url }}" alt="Sentiment Distribution Pie Chart" style="max-width: 100%;">
+        {% else %}
+        <p>No sentiment plot available due to insufficient data or an error.</p>
+        {% endif %}
+        <div class="sentiment-percentages">
+            <div class="percentage-box">
+                <h3>Positive</h3>
+                <p>{{ sentiment_percentages.positive | round(1) }}%</p>
+            </div>
+            <div class="percentage-box">
+                <h3>Negative</h3>
+                <p>{{ sentiment_percentages.negative | round(1) }}%</p>
+            </div>
+            <div class="percentage-box">
+                <h3>Neutral</h3>
+                <p>{{ sentiment_percentages.neutral | round(1) }}%</p>
+            </div>
+            <div class="percentage-box">
+                <h3>Question</h3>
+                <p>{{ sentiment_percentages.question | round(1) }}%</p>
+            </div>
+            <div class="percentage-box">
+                <h3>Abusive</h3>
+                <p>{{ sentiment_percentages.abusive | round(1) }}%</p>
+            </div>
+        </div>
+    </div>
 
-        function animateProgressBar(positiveCount, neutralCount, negativeCount) {
-            const total = positiveCount + neutralCount + negativeCount;
-            if (total === 0) return;
-            
-            const positivePercentage = (positiveCount / total) * 100;
-            const neutralPercentage = (neutralCount / total) * 100;
-            const negativePercentage = (negativeCount / total) * 100;
+    <div class="section">
+        <h2>Frequent Words</h2>
+        <p>Note: Shows frequently used words (excluding common English/Hindi terms like 'the', 'hai', and single letters).</p>
+        {% if frequent_words %}
+        <table>
+            <tr>
+                <th>Word</th>
+                <th>Count</th>
+            </tr>
+            {% for word, count in frequent_words %}
+            <tr>
+                <td>{{ word | escape }}</td>
+                <td>{{ count }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No significant words found in the comments. This may occur if comments are short, repetitive, or contain mostly URLs/emojis. Please check the server logs for detailed debugging information.</p>
+        {% endif %}
+        <div class="debug-section">
+            <h3>Debug: Raw Frequent Words</h3>
+            <p>{{ frequent_words | tojson | escape }}</p>
+        </div>
+    </div>
 
-            document.querySelector('.progress-bar.bg-success').style.width = ${positivePercentage}%;
-            document.querySelector('.progress-bar.bg-warning').style.width = ${neutralPercentage}%;
-            document.querySelector('.progress-bar.bg-danger').style.width = ${negativePercentage}%;
-            
-            // Add aria values for accessibility
-            document.querySelector('.progress-bar.bg-success').setAttribute('aria-valuenow', positivePercentage);
-            document.querySelector('.progress-bar.bg-warning').setAttribute('aria-valuenow', neutralPercentage);
-            document.querySelector('.progress-bar.bg-danger').setAttribute('aria-valuenow', negativePercentage);
-        }
+    <a href="{{ url_for('youtube') }}" class="back-button">Back to Analysis</a>
 
-        function formatCommentSummary(summaryText) {
-            const lines = summaryText.split('\n');
-            let html = '';
-            let delay = 0;
-            
-            lines.forEach(line => {
-                delay += 0.1;
-                if (line.startsWith('Top Question Comments:')) {
-                    html += <h5 class="text-info mt-3" style="animation: fadeIn 0.5s ease-out ${delay}s both;">${line}</h5>;
-                } else if (line.startsWith('Top Positive Comments:')) {
-                    html += <h5 class="text-success mt-3" style="animation: fadeIn 0.5s ease-out ${delay}s both;">${line}</h5>;
-                } else if (line.startsWith('Top Negative Comments:')) {
-                    html += <h5 class="text-danger mt-3" style="animation: fadeIn 0.5s ease-out ${delay}s both;">${line}</h5>;
-                } else if (line.startsWith('Summary:')) {
-                    html += <h5 class="text-info mt-3" style="animation: fadeIn 0.5s ease-out ${delay}s both;">${line}</h5>;
-                } else if (line.trim() === '') {
-                    html += '<br>';
-                } else {
-                    let commentClass = '';
-                    if (line.includes('Positive')) {
-                        commentClass = 'positive-comment';
-                    } else if (line.includes('Negative')) {
-                        commentClass = 'negative-comment';
-                    } else if (line.match(/^\d+\..*?\?$/)) {
-                        commentClass = 'question-comment';
-                    }
-                    html += <div class="comment-item ${commentClass}" style="animation-delay: ${delay}s;">${line}</div>;
-                }
-            });
-            
-            return html;
-        }
 
-        // Add staggered animation to word items
-        function animateWordItems() {
-            const wordItems = document.querySelectorAll('.word-item');
-            wordItems.forEach((item, index) => {
-                item.style.setProperty('--index', index);
-            });
-        }
+      <script>
+   // Add this script before the closing </body> tag
 
-        // Add scroll reveal animations
-        function initScrollReveal() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
-            
-            document.querySelectorAll('.word-frequency-card, .summary-card, .progress, .img-fluid').forEach(el => {
-                observer.observe(el);
-            });
-        }
+// Load Chart.js from CDN
+document.addEventListener('DOMContentLoaded', function() {
+    // Create a script element for Chart.js
+    var chartScript = document.createElement('script');
+    chartScript.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+    chartScript.onload = initializeChart;
+    document.head.appendChild(chartScript);
+    
+    // Add sentiment icons
+    addSentimentIcons();
+    
+    // Add animation classes
+    addAnimationClasses();
+});
 
-        window.addEventListener('load', () => {
-            const positiveCount = {{ sentiments['positive'] }};
-            const neutralCount = {{ sentiments['neutral'] }};
-            const negativeCount = {{ sentiments['negative'] }};
-            const spamCount = {{ spam_count }};
-
-            // Delay animations for a more pleasing sequence
-            setTimeout(() => {
-                animateCount(document.getElementById('positive'), positiveCount);
-            }, 500);
-            
-            setTimeout(() => {
-                animateCount(document.getElementById('neutral'), neutralCount);
-            }, 800);
-            
-            setTimeout(() => {
-                animateCount(document.getElementById('negative'), negativeCount);
-            }, 1100);
-            
-            setTimeout(() => {
-                animateProgressBar(positiveCount, neutralCount, negativeCount);
-            }, 1400);
-
-            // Format and display the comment summary
-            const summaryText = {{ summary }};
-            document.getElementById('comment-summary').innerHTML = formatCommentSummary(summaryText);
-            
-            // Animate word items
-            animateWordItems();
-            
-            // Initialize scroll reveal animations
-            initScrollReveal();
-
-            // Add shake animation to spam alert if spam count is high
-            if (spamCount > 5) {
-                const spamAlert = document.querySelector('.spam-alert');
-                
-                // Initial shake
-                spamAlert.style.animation = 'shake 0.5s';
-                
-                // Periodic shake every 5 seconds
-                setInterval(() => {
-                    spamAlert.style.animation = 'shake 0.5s';
-                    setTimeout(() => {
-                        spamAlert.style.animation = '';
-                    }, 500);
-                }, 5000);
-            }
-            
-            // Add hover effects to icons
-            const icons = document.querySelectorAll('.fas');
-            icons.forEach(icon => {
-                icon.addEventListener('mouseover', () => {
-                    icon.style.transform = 'scale(1.2)';
-                    icon.style.transition = 'transform 0.3s ease';
-                });
-                
-                icon.addEventListener('mouseout', () => {
-                    icon.style.transform = '';
-                });
-            });
+function initializeChart() {
+    // Check if we have sentiment data and a plot element
+    if (document.querySelector('.sentiment-percentages') && !document.getElementById('sentimentChart')) {
+        // Create canvas for the chart
+        var chartContainer = document.createElement('div');
+        chartContainer.className = 'chart-container';
+        
+        var canvas = document.createElement('canvas');
+        canvas.id = 'sentimentChart';
+        chartContainer.appendChild(canvas);
+        
+        // Find the section with sentiment percentages and insert chart before it
+        var sentimentSection = document.querySelector('.sentiment-percentages').closest('.section');
+        sentimentSection.insertBefore(chartContainer, sentimentSection.firstChild.nextSibling);
+        
+        // Get sentiment data
+        var sentimentBoxes = document.querySelectorAll('.sentiment-percentages .percentage-box');
+        var labels = [];
+        var data = [];
+        var backgroundColors = [
+            '#10b981', // positive - green
+            '#ef4444', // negative - red
+            '#6b7280', // neutral - gray
+            '#3b82f6', // question - blue
+            '#f97316'  // abusive - orange
+        ];
+        
+        sentimentBoxes.forEach(function(box, index) {
+            var label = box.querySelector('h3').textContent;
+            var value = parseFloat(box.querySelector('p').textContent);
+            labels.push(label);
+            data.push(value);
         });
-    </script>
+        
+        // Create the chart
+        var ctx = document.getElementById('sentimentChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    borderColor: 'white',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            padding: 20,
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw;
+                                return `${label}: ${value}%`;
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true,
+                    duration: 1000,
+                    easing: 'easeOutQuart'
+                }
+            }
+        });
+    }
+}
+
+function addSentimentIcons() {
+    // Add icons to sentiment boxes
+    var sentimentBoxes = document.querySelectorAll('.sentiments .sentiment-box');
+    var icons = ['👍', '👎', '😐', '❓', '⚠️'];
+    
+    sentimentBoxes.forEach(function(box, index) {
+        if (index < icons.length) {
+            var iconSpan = document.createElement('span');
+            iconSpan.style.fontSize = '2rem';
+            iconSpan.style.marginBottom = '0.5rem';
+            iconSpan.textContent = icons[index];
+            box.insertBefore(iconSpan, box.firstChild);
+        }
+    });
+    
+    // Add icons to alert boxes
+    var alertBoxes = document.querySelectorAll('.alerts .alert-box');
+    var alertIcons = ['⚠️', '🚫', '❓'];
+    
+    alertBoxes.forEach(function(box, index) {
+        if (index < alertIcons.length) {
+            var iconSpan = document.createElement('span');
+            iconSpan.style.fontSize = '2rem';
+            iconSpan.style.marginBottom = '0.5rem';
+            iconSpan.textContent = alertIcons[index];
+            box.insertBefore(iconSpan, box.firstChild);
+        }
+    });
+}
+
+function addAnimationClasses() {
+    // Add animation delay to elements
+    var sections = document.querySelectorAll('.section');
+    sections.forEach(function(section, index) {
+        section.style.animationDelay = (index * 0.1) + 's';
+    });
+    
+    // Add animation to comment items
+    var commentItems = document.querySelectorAll('.comment-item');
+    commentItems.forEach(function(item, index) {
+        item.style.animationDelay = (index * 0.05) + 's';
+        item.style.animation = 'fadeIn 0.5s ease-out forwards';
+        item.style.opacity = '0';
+    });
+}
+  </script>
 </body>
 </html>
