@@ -85,6 +85,7 @@ CommentLens uses awesome tools to work its magic! 🌟
   <a href="https://www.reddit.com/dev/api"><img src="https://www.vectorlogo.zone/logos/reddit/reddit-icon.svg" alt="Reddit API" width="40" height="40"/></a>
   <a href="https://matplotlib.org"><img src="https://tse4.mm.bing.net/th?id=OIP.E5J8npHStXRaoCta8S8UHgHaBf&pid=Api&P=0&h=180" alt="Matplotlib" width="100" height="40"/></a>
   <a href="https://scikit-learn.org"><img src="https://tse4.mm.bing.net/th?id=OIP.f_AeOzQStzLMN99gXFQk8AHaD_&pid=Api&P=0&h=180" alt="scikit-learn" width="80" height="40"/></a>
+  <a href="https://scikit-learn.org"><img src="https://tse3.mm.bing.net/th?id=OIP.kij1QlZKaZtCPtEbWQpiVAHaCz&pid=Api&P=0&h=180" alt="scikit-learn" width="150" height="40"/></a>
 </p>
 
 - **Python**: Our coding superhero! 🐍
