@@ -226,6 +226,7 @@ ________________________________________________________________________________
 👨‍🚀 Our Team
 
 Tarun Goel: Code Wizard & Comment Tamer
+<br>
 Shubh Singhal
 
 
@@ -239,6 +240,7 @@ Got ideas or questions? Reach out:
 GitHub: TarunGoel93 
 <br>
 Email: goeltarun15@gmail.com
+<br>
 Issues: GitHub Issues
 
 
