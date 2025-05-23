@@ -79,7 +79,7 @@ CommentLens uses awesome tools to work its magic! 🌟
 <h3 align="left">Tech Stack:</h3>
 <p align="left">
   <a href="https://www.python.org"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="Python" width="40" height="40"/></a>
-  <a href="https://flask.palletsprojects.com"><img src="https://p7.hiclipart.com/preview/508/316/14/flask-by-example-python-web-framework-bottle-bottle.jpg" alt="Flask" width="40" height="40"/></a>
+  <a href="https://flask.palletsprojects.com"><img src="https://datacorner.fr/wp-content/uploads/2019/04/flask.png" alt="Flask" width="40" height="40"/></a>
   <a href="https://www.sqlite.org"><img src="https://www.vectorlogo.zone/logos/sqlite/sqlite-icon.svg" alt="SQLite" width="40" height="40"/></a>
   <a href="https://developers.google.com/youtube"><img src="https://www.vectorlogo.zone/logos/youtube/youtube-icon.svg" alt="YouTube API" width="40" height="40"/></a>
   <a href="https://www.reddit.com/dev/api"><img src="https://www.vectorlogo.zone/logos/reddit/reddit-icon.svg" alt="Reddit API" width="40" height="40"/></a>
