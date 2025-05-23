@@ -236,7 +236,7 @@ ________________________________________________________________________________
 💬 Say Hi!
 Got ideas or questions? Reach out:
 
-GitHub: TarunGoel93
+GitHub: TarunGoel93 <br>
 Email: goeltarun15@gmail.com
 Issues: GitHub Issues
 
