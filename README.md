@@ -176,8 +176,7 @@ How to Use
 
 
 
-🎥 See It Live
-Check out our demo video to see CommentLens rock! (Add your video link here.) 🎬
+
 
 ---
 
