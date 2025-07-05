@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CommentLens - Analyzing Feedback</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated background particles */
+        .background-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(64, 224, 208, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) { width: 4px; height: 4px; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 6px; height: 6px; left: 20%; animation-delay: 1s; }
+        .particle:nth-child(3) { width: 3px; height: 3px; left: 30%; animation-delay: 2s; }
+        .particle:nth-child(4) { width: 5px; height: 5px; left: 40%; animation-delay: 3s; }
+        .particle:nth-child(5) { width: 4px; height: 4px; left: 50%; animation-delay: 4s; }
+        .particle:nth-child(6) { width: 6px; height: 6px; left: 60%; animation-delay: 5s; }
+        .particle:nth-child(7) { width: 3px; height: 3px; left: 70%; animation-delay: 1.5s; }
+        .particle:nth-child(8) { width: 5px; height: 5px; left: 80%; animation-delay: 2.5s; }
+        .particle:nth-child(9) { width: 4px; height: 4px; left: 90%; animation-delay: 3.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Main loading container */
+        .loading-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Logo/Brand */
+        .brand {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #40e0d0, #48cae4, #0077b6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px rgba(64, 224, 208, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(64, 224, 208, 0.8)); }
+        }
+
+        /* Spinner container */
+        .spinner-container {
+            position: relative;
+            margin: 3rem 0;
+            width: 120px;
+            height: 120px;
+        }
+
+        /* Rotating comment bubble */
+        .comment-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(64, 224, 208, 0.3);
+            border-top: 3px solid #40e0d0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .comment-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Magnifying glass spinner */
+        .magnifying-glass {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            border: 2px solid #48cae4;
+            border-radius: 50%;
+            animation: orbit 3s linear infinite;
+        }
+
+        .magnifying-glass::after {
+            content: '';
+            position: absolute;
+            top: 22px;
+            left: 22px;
+            width: 8px;
+            height: 2px;
+            background: #48cae4;
+            transform: rotate(45deg);
+        }
+
+        /* Pulse chart effect */
+        .pulse-chart {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            display: flex;
+            align-items: end;
+            gap: 3px;
+        }
+
+        .pulse-bar {
+            width: 4px;
+            background: linear-gradient(to top, #0077b6, #48cae4);
+            border-radius: 2px;
+            animation: pulse-height 1.5s ease-in-out infinite;
+        }
+
+        .pulse-bar:nth-child(1) { height: 20px; animation-delay: 0s; }
+        .pulse-bar:nth-child(2) { height: 15px; animation-delay: 0.2s; }
+        .pulse-bar:nth-child(3) { height: 25px; animation-delay: 0.4s; }
+        .pulse-bar:nth-child(4) { height: 18px; animation-delay: 0.6s; }
+        .pulse-bar:nth-child(5) { height: 22px; animation-delay: 0.8s; }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+        }
+
+        @keyframes orbit {
+            0% { transform: rotate(0deg) translateX(40px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
+        }
+
+        @keyframes pulse-height {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(1.5); }
+        }
+
+        /* Main status message with typewriter effect */
+        .main-message {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            min-height: 2rem;
+            color: #40e0d0;
+            font-weight: 500;
+        }
+
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid #40e0d0;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #40e0d0; }
+        }
+
+        /* Dynamic insights */
+        .insights-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .insight {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #b8c5d6;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease-in-out;
+            min-height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .insight.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .insight-icon {
+            margin-right: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        /* Progress indicator */
+        .progress-container {
+            margin-top: 3rem;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #40e0d0, #48cae4, #0077b6);
+            border-radius: 2px;
+            animation: progress 8s ease-in-out infinite;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        .progress-text {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #8892b0;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .brand { font-size: 2rem; }
+            .main-message { font-size: 1.2rem; }
+            .insight { font-size: 1rem; }
+            .spinner-container { width: 100px; height: 100px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background particles -->
+    <div class="background-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- Main loading container -->
+    <div class="loading-container">
+        <!-- Brand/Logo -->
+        <div class="brand">CommentLens</div>
+
+        <!-- Spinner with multiple animated elements -->
+        <div class="spinner-container">
+            <div class="comment-spinner"></div>
+            <div class="comment-icon">💬</div>
+            <div class="magnifying-glass"></div>
+            <div class="pulse-chart">
+                <div class="pulse-bar"></div>
+                <div class="pulse-bar"></div>
+                <div class="pulse-bar"></div>
+                <div class="pulse-bar"></div>
+                <div class="pulse-bar"></div>
+            </div>
+        </div>
+
+        <!-- Main status message -->
+        <div class="main-message">
+            <div id="typewriter-text" class="typewriter"></div>
+        </div>
+
+        <!-- Dynamic insights -->
+        <div class="insights-container">
+            <div id="insight-display" class="insight">
+                <span class="insight-icon">💡</span>
+                <span id="insight-text"></span>
+            </div>
+        </div>
+
+        <!-- Progress indicator -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="progress-text">Analyzing audience sentiment...</div>
+        </div>
+    </div>
+
+    <script>
+        // Main status messages for typewriter effect
+        const mainMessages = [
+            "Scanning audience sentiment...",
+            "Pulling insights from 1000+ voices...",
+            "Analyzing feedback patterns...",
+            "Processing comment emotions...",
+            "Extracting hidden insights..."
+        ];
+
+        // Dynamic insights and facts
+        const insights = [
+            { icon: "📊", text: "Did you know? 15% of comments online are considered toxic." },
+            { icon: "🎯", text: "Loading sentiment trends... your audience has a lot to say." },
+            { icon: "🔍", text: "Extracting hidden insights from 1000+ comments..." },
+            { icon: "💭", text: "Fun fact: The average comment contains 12 words." },
+            { icon: "⚡", text: "Processing emotional patterns in real-time..." },
+            { icon: "🌟", text: "85% of feedback contains actionable insights." },
+            { icon: "🎨", text: "Analyzing comment sentiment across 50+ emotions..." },
+            { icon: "🚀", text: "Your audience engagement is 3x above average!" },
+            { icon: "🔥", text: "Detecting trending topics in your comments..." },
+            { icon: "💡", text: "Comments with questions get 40% more engagement." },
+            { icon: "📈", text: "Mapping audience sentiment over time..." },
+            { icon: "🎪", text: "Fun insight: Emojis increase comment positivity by 25%!" }
+        ];
+
+        let currentMainMessageIndex = 0;
+        let currentInsightIndex = 0;
+
+        // Typewriter effect for main message
+        function typeWriter(text, element, callback) {
+            element.innerHTML = '';
+            element.classList.add('typewriter');
+            let i = 0;
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, 50);
+                } else {
+                    setTimeout(() => {
+                        element.classList.remove('typewriter');
+                        if (callback) callback();
+                    }, 1000);
+                }
+            }
+            type();
+        }
+
+        // Rotate main messages
+        function rotateMainMessage() {
+            const typewriterElement = document.getElementById('typewriter-text');
+            const message = mainMessages[currentMainMessageIndex];
+            
+            typeWriter(message, typewriterElement, () => {
+                currentMainMessageIndex = (currentMainMessageIndex + 1) % mainMessages.length;
+                setTimeout(rotateMainMessage, 2000);
+            });
+        }
+
+        // Rotate insights
+        function rotateInsights() {
+            const insightDisplay = document.getElementById('insight-display');
+            const insightIcon = insightDisplay.querySelector('.insight-icon');
+            const insightText = document.getElementById('insight-text');
+            
+            // Fade out
+            insightDisplay.classList.remove('active');
+            
+            setTimeout(() => {
+                // Update content
+                const currentInsight = insights[currentInsightIndex];
+                insightIcon.textContent = currentInsight.icon;
+                insightText.textContent = currentInsight.text;
+                
+                // Fade in
+                insightDisplay.classList.add('active');
+                
+                currentInsightIndex = (currentInsightIndex + 1) % insights.length;
+            }, 250);
+        }
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Start typewriter effect
+            setTimeout(() => {
+                rotateMainMessage();
+            }, 500);
+            
+            // Start insights rotation
+            setTimeout(() => {
+                rotateInsights();
+                setInterval(rotateInsights, 3000);
+            }, 1500);
+        });
+
+        // Simulate loading completion (remove this in actual implementation)
+        setTimeout(() => {
+            document.body.style.opacity = '0.5';
+            setTimeout(() => {
+                alert('Loading complete! (In real app, navigate to results page)');
+                document.body.style.opacity = '1';
+            }, 500);
+        }, 15000);
+    </script>
+</body>
+</html>

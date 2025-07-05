@@ -104,7 +104,7 @@ def credentials_to_dict(credentials):
 def extract_video_id(url):
     patterns = [
         r'(?:v=|youtu\.be\/|\/embed\/|\/video\/)([a-zA-Z0-9_-]{11})',
-        r'youtube\.com\/.*[?&]v=([a-zA-Z0-9_-]{11})'
+    r'youtube\.com\/.*[?&]v=([a-zA-Z0-9_-]{11})'
     ]
     
     for pattern in patterns:
@@ -470,7 +470,7 @@ def analyze_comments():
         
         if not video_id:
             logger.error("Invalid YouTube URL provided")
-            return render_template('youtube.html', error="Invalid YouTube URL. Please provide a valid video URL.")
+            return render_template('404_error.html')  # Render 404_error.html for invalid video ID
         
         session['last_video_id'] = video_id
 
@@ -478,6 +478,8 @@ def analyze_comments():
             comments, question_comments, abusive_comments, question_comment_ids, abusive_comment_ids, spam_count, error_message = get_comments(youtube, video_id, max_comments=500)
             if error_message and not comments:
                 logger.warning(f"Comment fetching failed: {error_message}")
+                if "Video not found or invalid video ID" in error_message:
+                    return render_template('404_error.html')  # Render 404_error.html for 404 errors
                 return render_template('results.html',
                                     plot_url=None,
                                     sentiments={'positive': 0, 'negative': 0, 'neutral': 0, 'question': 0, 'abusive': 0},
@@ -622,6 +624,8 @@ def analyze_comments():
             comments, question_comments, abusive_comments, question_comment_ids, abusive_comment_ids, spam_count, error_message = get_comments(youtube, session['last_video_id'], max_comments=500)
             
             if error_message and not comments:
+                if "Video not found or invalid video ID" in error_message:
+                    return render_template('404_error.html')  # Render 404_error.html for 404 errors
                 return render_template('results.html',
                                      plot_url=None,
                                      sentiments={'positive': 0, 'negative': 0, 'neutral': 0, 'question': 0, 'abusive': 0},
@@ -710,7 +714,7 @@ def analyze_comments():
                                 error=None)
         except Exception as e:
             logger.error(f"Error re-running analysis for video ID {session['last_video_id']}: {e}")
-            return render_template('youtube.html', error="Failed to load previous analysis. Please submit a new video URL.")
+            return render_template('404_error.html')  # Render 404_error.html for errors with last_video_id
     
     logger.debug("Redirecting to youtube.html for GET request")
     return redirect(url_for('youtube'))
@@ -757,7 +761,7 @@ def initiate_call():
 
         # Define agent and number
         agent_id = 2516
-        to_number = "+919210034977"
+        to_number = "+916397277749"
 
         # Dispatch the call
         response = client.call.dispatch_call(agent_id, to_number)

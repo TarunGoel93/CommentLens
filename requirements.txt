@@ -1,0 +1,13 @@
+Flask
+google-auth
+google-auth-oauthlib
+google-api-python-client
+Flask-SQLAlchemy
+bcrypt
+matplotlib
+sumy
+asyncpraw
+nest_asyncio
+nltk
+requests
+omnidimension

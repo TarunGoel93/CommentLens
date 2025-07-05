@@ -82,6 +82,12 @@
             display: flex;
             flex-direction: column;
             line-height: 1.6;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.light-theme {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            color: #333333;
         }
 
         /* Header Styles */
@@ -98,6 +104,12 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        body.light-theme header {
+            background: linear-gradient(to right, #ffffff, #f0f0f0);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .header-content {
@@ -114,6 +126,12 @@
             letter-spacing: 0.5px;
             color: #ffffff;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            transition: color 0.3s ease;
+        }
+
+        body.light-theme header h1 {
+            color: #333333;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         header .logo {
@@ -121,6 +139,37 @@
             font-size: 2.4rem;
             color: #007bff;
             text-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+            transition: color 0.3s ease;
+        }
+
+        body.light-theme header .logo {
+            color: #0056b3;
+            text-shadow: none;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+            color: #333333;
+            padding: 10px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        body.light-theme .theme-toggle {
+            background: linear-gradient(135deg, #333333 0%, #4a4a4a 100%);
+            color: #ffffff;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
         }
 
         /* Contact Support Button */
@@ -140,6 +189,10 @@
             align-items: center;
             gap: 8px;
             animation: pulse 2s infinite;
+        }
+
+        body.light-theme .call-button {
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
         }
 
         .call-button:hover {
@@ -180,6 +233,11 @@
             bottom: 0;
             background: radial-gradient(circle at 50% 50%, rgba(0, 123, 255, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
             z-index: -1;
+            transition: background 0.3s ease;
+        }
+
+        body.light-theme .container::before {
+            background: radial-gradient(circle at 50% 50%, rgba(0, 123, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
         }
 
         /* Dashboard Card */
@@ -193,6 +251,13 @@
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             animation: scaleIn 0.8s ease-out;
+            transition: background 0.3s ease, border 0.3s ease;
+        }
+
+        body.light-theme .dashboard-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         /* Welcome Message */
@@ -206,6 +271,11 @@
             font-size: 1.5rem;
             margin: 0.5rem 0;
             color: #e0e0e0;
+            transition: color 0.3s ease;
+        }
+
+        body.light-theme .welcome-message p {
+            color: #555555;
         }
 
         .welcome-message p:first-child {
@@ -213,6 +283,11 @@
             font-weight: 600;
             color: #ffffff;
             margin-bottom: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        body.light-theme .welcome-message p:first-child {
+            color: #333333;
         }
 
         .welcome-message .highlight {
@@ -232,6 +307,11 @@
             color: #ffffff;
             text-align: center;
             position: relative;
+            transition: color 0.3s ease;
+        }
+
+        body.light-theme .platform-selection h2 {
+            color: #333333;
         }
 
         .platform-selection h2::after {
@@ -276,6 +356,10 @@
             overflow: hidden;
         }
 
+        body.light-theme .platform-list a {
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+        }
+
         .platform-list a:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
@@ -292,6 +376,10 @@
             box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
         }
 
+        body.light-theme .platform-list a.youtube {
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.2);
+        }
+
         .platform-list a.youtube:hover {
             box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
         }
@@ -299,6 +387,10 @@
         .platform-list a.reddit {
             background: linear-gradient(135deg, #ff4500 0%, #d13400 100%);
             box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+        }
+
+        body.light-theme .platform-list a.reddit {
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.2);
         }
 
         .platform-list a.reddit:hover {
@@ -335,6 +427,11 @@
             position: relative;
             display: inline-block;
             width: 100%;
+            transition: color 0.3s ease;
+        }
+
+        body.light-theme .recent-activity h2 {
+            color: #333333;
         }
 
         .recent-activity h2::after {
@@ -362,11 +459,20 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
+        body.light-theme .activity-item {
+            background: rgba(200, 200, 200, 0.3);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
         .activity-item:hover {
             transform: translateX(5px);
             background: rgba(60, 60, 60, 0.6);
             border-left-color: #007bff;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        body.light-theme .activity-item:hover {
+            background: rgba(220, 220, 220, 0.4);
         }
 
         .activity-item:nth-child(2):hover {
@@ -388,6 +494,11 @@
             border-radius: 50%;
             background: rgba(0, 123, 255, 0.2);
             color: #007bff;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.light-theme .activity-icon {
+            background: rgba(0, 123, 255, 0.1);
         }
 
         .activity-item:nth-child(2) .activity-icon {
@@ -395,9 +506,17 @@
             color: #ff0000;
         }
 
+        body.light-theme .activity-item:nth-child(2) .activity-icon {
+            background: rgba(255, 0, 0, 0.1);
+        }
+
         .activity-item:nth-child(3) .activity-icon {
             background: rgba(255, 69, 0, 0.2);
             color: #ff4500;
+        }
+
+        body.light-theme .activity-item:nth-child(3) .activity-icon {
+            background: rgba(255, 69, 0, 0.1);
         }
 
         .activity-content {
@@ -408,18 +527,33 @@
             font-size: 1.1rem;
             margin-bottom: 0.3rem;
             color: #ffffff;
+            transition: color 0.3s ease;
+        }
+
+        body.light-theme .activity-content h3 {
+            color: #333333;
         }
 
         .activity-content p {
             font-size: 0.9rem;
             color: #b0b0b0;
             margin-bottom: 0.3rem;
+            transition: color 0.3s ease;
+        }
+
+        body.light-theme .activity-content p {
+            color: #666666;
         }
 
         .activity-time {
             font-size: 0.8rem;
             color: #888888;
             margin-left: auto;
+            transition: color 0.3s ease;
+        }
+
+        body.light-theme .activity-time {
+            color: #555555;
         }
 
         /* Footer */
@@ -432,6 +566,13 @@
             animation: fadeInUp 0.8s ease-out;
             position: relative;
             z-index: 10;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.light-theme footer {
+            background: linear-gradient(to right, #ffffff, #f0f0f0);
+            color: #333333;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
         }
 
         footer p {
@@ -447,9 +588,18 @@
             border-radius: 5px;
         }
 
+        body.light-theme footer a {
+            color: #0056b3;
+        }
+
         footer a:hover {
             color: #ffffff;
             background-color: #007bff;
+        }
+
+        body.light-theme footer a:hover {
+            color: #ffffff;
+            background-color: #0056b3;
         }
 
         /* Responsive Design */
@@ -510,6 +660,9 @@
             <i class="fas fa-chart-line logo"></i>
             <h1>Feed Back Tracker Dashboard</h1>
         </div>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+            <i class="fas fa-moon"></i>
+        </button>
         <button class="call-button" onclick="initiateCall()">Contact Support</button>
     </header>
 
@@ -588,6 +741,18 @@
             .catch(error => {
                 alert('Error initiating call: ' + error.message);
             });
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            const themeToggleBtn = document.querySelector('.theme-toggle i');
+            if (document.body.classList.contains('light-theme')) {
+                themeToggleBtn.classList.remove('fa-moon');
+                themeToggleBtn.classList.add('fa-sun');
+            } else {
+                themeToggleBtn.classList.remove('fa-sun');
+                themeToggleBtn.classList.add('fa-moon');
+            }
         }
     </script>
 </body>
