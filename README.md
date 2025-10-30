@@ -391,3 +391,5 @@ Developer: Tarun Goel (@TarunGoel93).
 Libraries: Thanks to nltk, sumy, matplotlib, Flask, and google-api-python-client.
 Tools: Powered by Python, SQLite, and Bootstrap 5.
 # CommentLens
+#   C o m m e n t L e n s  
+ 
