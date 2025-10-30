@@ -807,6 +807,11 @@ async def fetch_comments(post_id):
         await reddit.close()
     return comments, spam_count
 
+@app.route('/businesses')
+def businesses():
+    return render_template('bsql.html')
+
+
 @app.route('/reddit_input')
 def reddit_input():
     logger.debug("Rendering reddit_input.html")
@@ -913,6 +918,12 @@ def reddit_analysis():
     except Exception as e:
         logger.error(f"Error processing Reddit analysis: {e}")
         return render_template('reddit_input.html', error="Error processing Reddit post")
+
+# New route for the documentation page
+@app.route('/document')
+def document():
+    logger.debug("Rendering document.html")
+    return render_template('document.html')
 
 if __name__ == '__main__':
     logger.info("Starting Flask application")

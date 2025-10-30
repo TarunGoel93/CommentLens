@@ -3,21 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Feed Back Tracker</title>
+    <title>Document Analysis | Feed Back Tracker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Animations */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Global Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, #1a1a1a, #2c2c2c);
+            color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
+        body.light-theme {
+            background: linear-gradient(to bottom, #ffffff, #f0f0f0);
+            color: #333333;
+        }
+
+        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -31,114 +38,58 @@
 
         @keyframes scaleIn {
             from {
-                transform: scale(0.9);
                 opacity: 0;
+                transform: scale(0.95);
             }
             to {
-                transform: scale(1);
                 opacity: 1;
+                transform: scale(1);
             }
         }
 
         @keyframes pulse {
-            0% {
-                transform: scale(1);
-                box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-            }
-            50% {
-                transform: scale(1.03);
-                box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
-            }
-            100% {
-                transform: scale(1);
-                box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-            }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
         }
 
         @keyframes gradientShift {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        /* Reset and Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
-            color: #f5f5f5;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            line-height: 1.6;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        body.light-theme {
-            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
-            color: #333333;
-        }
-
-        /* Header Styles */
+        /* Header */
         header {
             background: linear-gradient(to right, #2c2c2c, #363636);
-            padding: 1.5rem;
+            color: #f5f5f5;
+            padding: 1.5rem 2rem;
             text-align: center;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            animation: fadeInDown 0.8s ease-out;
             position: relative;
             z-index: 10;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         body.light-theme header {
             background: linear-gradient(to right, #ffffff, #f0f0f0);
+            color: #333333;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .header-content {
+        header .header-content {
             display: flex;
             align-items: center;
-            justify-content: center;
-            flex: 1;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 2.2rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: #ffffff;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            transition: color 0.3s ease;
-        }
-
-        body.light-theme header h1 {
-            color: #333333;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            gap: 1rem;
         }
 
         header .logo {
-            margin-right: 15px;
-            font-size: 2.4rem;
+            font-size: 2rem;
             color: #007bff;
-            text-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+            animation: pulse 2s infinite;
             transition: color 0.3s ease;
         }
 
@@ -670,13 +621,83 @@
                 align-self: flex-start;
             }
         }
+
+        /* Upload Form Specific Styles */
+        .upload-section {
+            margin: 2rem 0;
+            animation: fadeInUp 0.8s ease-out 0.3s backwards;
+            text-align: center;
+        }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .upload-form input[type="file"] {
+            background: rgba(50, 50, 50, 0.5);
+            color: #f5f5f5;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        body.light-theme .upload-form input[type="file"] {
+            background: rgba(200, 200, 200, 0.3);
+            color: #333333;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-form input[type="file"]:hover {
+            border-color: #007bff;
+        }
+
+        .upload-form button {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            background-size: 200% 200%;
+            color: #ffffff;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        body.light-theme .upload-form button {
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+        }
+
+        .upload-form button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+            animation: gradientShift 3s ease infinite;
+        }
+
+        .upload-form button:active {
+            transform: translateY(-1px);
+        }
+
+        .upload-form button::before {
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            content: '\f093';
+            margin-right: 0.5rem;
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="header-content">
-            <i class="fas fa-chart-line logo"></i>
-            <h1>Feed Back Tracker Dashboard</h1>
+            <i class="fas fa-book logo"></i>
+            <h1>Document Analysis</h1>
         </div>
         <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
             <i class="fas fa-moon"></i>
@@ -687,91 +708,53 @@
     <div class="container">
         <div class="dashboard-card">
             <div class="welcome-message">
-                <p>Hello, <span class="highlight">{{ user.name }}</span>! 👋</p>
-                <p>Your content analysis dashboard is ready</p>
+                <p>Welcome to Document Analysis! 📚</p>
+                <p>Upload your PDF or Word files for feedback analysis.</p>
             </div>
 
-            <section class="platform-selection">
-                <h2>Select a platform to analyze your content:</h2>
-                <div class="platform-list">
-                    <a href="{{ url_for('youtube') }}" class="youtube">YouTube</a>
-                    <a href="{{ url_for('businesses') }}" class="youtube">Businesses</a>
-                    <a href="{{ url_for('reddit_input') }}" class="reddit">Reddit</a>
-                    <a href="{{ url_for('document') }}" class="document">Document</a>
-                </div>
-            </section>
-
-            <section class="recent-activity">
-                <h2>Recent Activity</h2>
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fab fa-reddit"></i>
-                    </div>
-                    <div class="activity-content">
-                        <h3>Reddit Analysis Completed</h3>
-                        <p>Sentiment analysis for r/technology post completed</p>
-                    </div>
-                    <span class="activity-time">2 hours ago</span>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fab fa-youtube"></i>
-                    </div>
-                    <div class="activity-content">
-                        <h3>YouTube Comments Analyzed</h3>
-                        <p>Processed 124 comments from your latest video</p>
-                    </div>
-                    <span class="activity-time">Yesterday</span>
-                </div>
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fab fa-twitter"></i>
-                    </div>
-                    <div class="activity-content">
-                        <h3>X Account Connected</h3>
-                        <p>Successfully linked your X business account</p>
-                    </div>
-                    <span class="activity-time">3 days ago</span>
-                </div>
+            <section class="upload-section">
+                <h2>Upload Document</h2>
+                <form class="upload-form" action="/upload_document" method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" accept=".pdf,.doc,.docx" required>
+                    <button type="submit">Upload and Analyze</button>
+                </form>
+                <p>Supported formats: PDF (.pdf), Word (.doc, .docx)</p>
             </section>
         </div>
     </div>
 
     <footer>
-        <p>© 2024 Feed Back Tracker. <a href="{{ url_for('logout') }}">Logout</a></p>
+        <p>© 2024 Feed Back Tracker. <a href="{{ url_for('dashboard') }}">Back to Dashboard</a> | <a href="{{ url_for('logout') }}">Logout</a></p>
     </footer>
 
     <script>
-        function initiateCall() {
-            fetch('/initiate_call', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Call initiated successfully! Our agent will contact you shortly.');
-                } else {
-                    alert('Failed to initiate call: ' + data.error);
-                }
-            })
-            .catch(error => {
-                alert('Error initiating call: ' + error.message);
-            });
-        }
-
         function toggleTheme() {
             document.body.classList.toggle('light-theme');
-            const themeToggleBtn = document.querySelector('.theme-toggle i');
+            const icon = document.querySelector('.theme-toggle i');
             if (document.body.classList.contains('light-theme')) {
-                themeToggleBtn.classList.remove('fa-moon');
-                themeToggleBtn.classList.add('fa-sun');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
             } else {
-                themeToggleBtn.classList.remove('fa-sun');
-                themeToggleBtn.classList.add('fa-moon');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
             }
+        }
+
+        function initiateCall() {
+            // Add your call initiation logic here (from dashboard.html script)
+            fetch('/initiate_call', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Call initiated successfully!');
+                    } else {
+                        alert('Failed to initiate call: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while initiating the call.');
+                });
         }
     </script>
 </body>
